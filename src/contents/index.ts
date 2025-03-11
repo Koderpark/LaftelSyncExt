@@ -1,11 +1,9 @@
 import type { PlasmoCSConfig } from "plasmo"
 
 export const config: PlasmoCSConfig = {
-  matches: ["https://www.plasmo.com/*"]
+  matches: ["https://laftel.net/*"]
 }
 
 window.addEventListener("load", () => {
-  console.log("content script loaded")
-
-  document.body.style.background = "pink"
+  // alert("content script loaded")
 })
