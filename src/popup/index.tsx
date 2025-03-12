@@ -1,21 +1,20 @@
-import { useReducer } from "react"
+import { useReducer, useState } from "react"
+
+import { sendToBackground } from "@plasmohq/messaging"
 
 import "../style.css"
 
-function IndexPopup() {
-  const [count, increase] = useReducer((c) => c + 1, 0)
+import loginPopup from "./login"
+import mainPopup from "./main"
+
+export default function sync() {
+  const [jwt, setJwt] = useState(null)
+
+  sendToBackground({ name: "auth-check" }).then((res) => setJwt(res))
 
   return (
-    <button
-      onClick={() => increase()}
-      type="button"
-      className="inline-flex items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-      Count:asdadaa
-      <span className="inline-flex items-center justify-center w-8 h-4 ml-2 text-xs font-semibold text-blue-800 bg-blue-200 rounded-full">
-        {count}
-      </span>
-    </button>
+    <div className="w-64 h-64 bg-gray-100 flex flex-col items-center justify-center">
+      {jwt ? mainPopup() : loginPopup()}
+    </div>
   )
 }
-
-export default IndexPopup
