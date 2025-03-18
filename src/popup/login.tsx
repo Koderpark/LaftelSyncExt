@@ -1,8 +1,10 @@
 import { useState } from "react"
 
 import { sendToBackground } from "@plasmohq/messaging"
+import type { promises } from "dns"
 
-export default function loginPopup() {
+export default function loginPopup(props) {
+  const { Login } = props
   const [id, setId] = useState("")
   const [pw, setPw] = useState("")
 
@@ -19,22 +21,13 @@ export default function loginPopup() {
           placeholder="Password"
           onChange={(e) => setPw(e.target.value)}
         />
-      </form>
-      <button
-        onClick={async () => {
-          const res = await sendToBackground({
-            name: "auth-login",
-            body: { id, pw }
-          })
-
-          if (res) {
-            alert(res)
-          } else {
-            alert("Login failed")
-          }
+        <button type="submit" onClick={(e) => {
+          e.preventDefault()
+          Login(id, pw)
         }}>
-        Login
-      </button>
+          Login
+        </button>
+      </form>
     </div>
   )
 }

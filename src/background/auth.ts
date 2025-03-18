@@ -33,3 +33,8 @@ export async function login(id: string, pw: string): Promise<string | null> {
 
   return null
 }
+
+export async function logout(): Promise<boolean> {
+  await storage.remove("jwt")
+  return true
+}
