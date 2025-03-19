@@ -30,7 +30,6 @@ export async function login(id: string, pw: string): Promise<string | null> {
     await storage.set("jwt", jwt["access_token"])
     return jwt["access_token"]
   }
-
   return null
 }
 
