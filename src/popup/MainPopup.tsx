@@ -30,7 +30,7 @@ export default function mainPopup(props) {
       </Header>
       <Content>
         <p>{data}</p>
-        <button onClick={() => openNoti(NotiElem, "success")}>Open Noti</button>
+        <button onClick={() => openNoti(NotiElem, "info")}>Open Noti</button>
       </Content>
     </div>
   )
