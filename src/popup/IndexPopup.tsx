@@ -19,8 +19,8 @@ export function IndexPopup(props) {
 
     if (res) {
       setIsLoggedIn(true)
-      openNoti(<h1>Login success</h1>, "success")
-    } else openNoti(<h1>Login failed</h1>, "error")
+      openNoti("Login success", "success")
+    } else openNoti("Login failed", "error")
   }
 
   const Logout = async () => {
@@ -30,8 +30,8 @@ export function IndexPopup(props) {
 
     if (res) {
       setIsLoggedIn(false)
-      openNoti(<h1>Logout success</h1>, "success")
-    } else openNoti(<h1>Logout failed</h1>, "error")
+      openNoti("Logout success", "success")
+    } else openNoti("Logout failed", "error")
   }
 
   useEffect(() => {

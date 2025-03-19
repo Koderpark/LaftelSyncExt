@@ -31,6 +31,12 @@ export default function mainPopup(props) {
       <Content>
         <p>{data}</p>
         <button onClick={() => openNoti(NotiElem, "info")}>Open Noti</button>
+        <button onClick={() => sendToBackground({ name: "socket-test" })}>
+          Socket Test
+        </button>
+        <button onClick={() => sendToBackground({ name: "socket-test2" })}>
+          Socket Test
+        </button>
       </Content>
     </div>
   )
