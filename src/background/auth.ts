@@ -1,20 +1,8 @@
 import { Storage } from "@plasmohq/storage"
 
+import { shake } from "./socket"
+
 const storage = new Storage()
-
-export async function isLoggedIn(): Promise<boolean> {
-  const jwt = await storage.get("jwt")
-  if (!jwt) return false
-
-  const ret = await fetch("http://localhost:3000/user/rawJwt", {
-    headers: {
-      Authorization: `Bearer ${jwt}`
-    }
-  })
-
-  if (ret.status === 200) return true
-  return false
-}
 
 export async function login(id: string, pw: string): Promise<string | null> {
   const ret = await fetch("http://localhost:3000/auth/login", {
@@ -27,13 +15,40 @@ export async function login(id: string, pw: string): Promise<string | null> {
 
   if (ret.status === 201) {
     const jwt = JSON.parse(await ret.text())
+
     await storage.set("jwt", jwt["access_token"])
+    await storage.set("isLoggedIn", true)
     return jwt["access_token"]
   }
   return null
 }
 
 export async function logout(): Promise<boolean> {
+  await storage.set("isLoggedIn", false)
   await storage.remove("jwt")
   return true
+}
+
+export async function authRequest(
+  url: string,
+  method: string,
+  body: any
+): Promise<any> {
+  const jwt = await storage.get("jwt")
+  if (!jwt) {
+    await logout()
+    return null
+  }
+
+  const ret = await fetch(url, {
+    method,
+    headers: { Authorization: `Bearer ${jwt}` },
+    body
+  })
+
+  if (ret.status === 401) {
+    await logout()
+    return null
+  }
+  return JSON.parse(await ret.text())
 }
