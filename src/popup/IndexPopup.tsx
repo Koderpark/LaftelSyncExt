@@ -8,8 +8,8 @@ import LoginPopup from "~popup/LoginPopup"
 import MainPopup from "~popup/MainPopup"
 
 export function IndexPopup(props) {
-  const [isLoggedIn] = useStorage("isLoggedIn")
-
+  const [jwt] = useStorage("jwt")
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
   const { openNoti } = useContext(NotiContext)
 
   const Login = async (id: string, pw: string) => {
@@ -29,6 +29,19 @@ export function IndexPopup(props) {
     if (res) openNoti("Logout success", "success")
     else openNoti("Logout failed", "error")
   }
+
+  useEffect(() => {
+    const validateJWT = async () => {
+      const res = await sendToBackground({
+        name: "auth-validate",
+        body: { jwt }
+      })
+      console.log(res)
+      if (res) setIsLoggedIn(true)
+      else setIsLoggedIn(false)
+    }
+    validateJWT()
+  }, [jwt])
 
   return (
     <div className="w-[320px] h-[480px] bg-gray-100 p-0">

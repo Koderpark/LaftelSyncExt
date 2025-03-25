@@ -25,8 +25,16 @@ export async function login(id: string, pw: string): Promise<string | null> {
 
 export async function logout(): Promise<boolean> {
   await storage.set("isLoggedIn", false)
-  await storage.remove("jwt")
+  await storage.set("jwt", null)
   return true
+}
+
+export async function validateJWT(jwt: string): Promise<boolean> {
+  const ret = await fetch("http://localhost:3000/user/rawJwt", {
+    method: "GET",
+    headers: { Authorization: `Bearer ${jwt}` }
+  })
+  return ret.status === 200
 }
 
 export async function authRequest(
