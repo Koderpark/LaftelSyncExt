@@ -1,9 +1,9 @@
 import type { PlasmoMessaging } from "@plasmohq/messaging"
 
-import { socket } from "../socket"
+import { shake, socket } from "../socket"
 
 const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
-  socket.connect()
+  shake()
   console.log("socket-test")
   socket.emit("events", "hello from extension")
 }

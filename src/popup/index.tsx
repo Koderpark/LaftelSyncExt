@@ -22,7 +22,6 @@ export default function notiWrapper() {
 
 export function IndexPopup(props) {
   const [jwt] = useStorage("jwt")
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
   const { openNoti } = useContext(NotiContext)
 
   const Login = async (id: string, pw: string) => {
@@ -43,22 +42,10 @@ export function IndexPopup(props) {
     else openNoti("Logout failed", "error")
   }
 
-  useEffect(() => {
-    const validateJWT = async () => {
-      const res = await sendToBackground({
-        name: "auth-validate",
-        body: { jwt }
-      })
-      if (res) setIsLoggedIn(true)
-      else setIsLoggedIn(false)
-    }
-    validateJWT()
-  }, [jwt])
-
   return (
     <div>
-      {isLoggedIn && <MainPopup Logout={Logout} />}
-      {!isLoggedIn && <LoginPopup Login={Login} />}
+      {jwt && <MainPopup Logout={Logout} />}
+      {!jwt && <LoginPopup Login={Login} />}
     </div>
   )
 }

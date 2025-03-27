@@ -1,10 +1,9 @@
 import type { PlasmoMessaging } from "@plasmohq/messaging"
 
-import { validateJWT } from "~background/auth"
+import { checkJWT } from "~background/validate"
 
 const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
-  const { jwt } = req.body
-  const message = await validateJWT(jwt)
+  const message = await checkJWT()
   res.send(message)
 }
 
