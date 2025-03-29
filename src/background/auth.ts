@@ -1,7 +1,5 @@
 import { Storage } from "@plasmohq/storage"
 
-import { shake } from "./socket"
-
 const storage = new Storage()
 
 export async function login(id: string, pw: string): Promise<string | null> {

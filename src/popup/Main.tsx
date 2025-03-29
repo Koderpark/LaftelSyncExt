@@ -22,7 +22,8 @@ export default function mainPopup(props) {
         </Pill>
       </Header>
       <Content>
-        {!roomId && <Body openNoti={openNoti} />}
+        {roomId}
+        {roomId && <Body openNoti={openNoti} />}
         {!roomId && <RoomSelect />}
       </Content>
     </div>

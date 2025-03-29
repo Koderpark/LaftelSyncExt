@@ -3,13 +3,22 @@ import { useState } from "react"
 
 export default function RoomSelect() {
   const [roomId, setRoomId] = useState("")
+  const [roomName, setRoomName] = useState("")
 
-  const submit = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const submitJoin = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
     // sendToBackground({
     //   name: "room-join",
     //   body: { roomId }
     // })
+  }
+
+  const submitCreate = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+    sendToBackground({
+      name: "room-create",
+      body: { roomName }
+    })
   }
 
   return (
@@ -21,8 +30,19 @@ export default function RoomSelect() {
           placeholder="Room ID"
           onChange={(e) => setRoomId(e.target.value)}
         />
-        <button type="submit" onClick={submit}>
+        <button type="submit" onClick={submitJoin}>
           Join
+        </button>
+      </form>
+      or
+      <form>
+        <input
+          type="text"
+          placeholder="Room Name"
+          onChange={(e) => setRoomName(e.target.value)}
+        />
+        <button type="submit" onClick={submitCreate}>
+          Create
         </button>
       </form>
     </div>
