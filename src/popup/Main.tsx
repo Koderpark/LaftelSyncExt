@@ -5,11 +5,11 @@ import { sendToBackground } from "@plasmohq/messaging"
 import { Content, Header, Noti, NotiContext, Pill } from "~component"
 import { useStorage } from "@plasmohq/storage/hook"
 import RoomSelect from "./RoomSelect"
+import Room from "./Room"
 
 export default function mainPopup(props) {
   const { Logout } = props
   const [roomId] = useStorage("roomId")
-  const { openNoti } = useContext(NotiContext)
 
   return (
     <div>
@@ -22,25 +22,9 @@ export default function mainPopup(props) {
         </Pill>
       </Header>
       <Content>
-        {roomId}
-        {roomId && <Body openNoti={openNoti} />}
-        {!roomId && <RoomSelect />}
+        {roomId != -1 && <Room />}
+        {roomId == -1 && <RoomSelect />}
       </Content>
-    </div>
-  )
-}
-
-function Body(props) {
-  const { openNoti } = props
-  return (
-    <div>
-      <button onClick={() => openNoti("hello", "info")}>Open Noti</button>
-      <button onClick={() => sendToBackground({ name: "socket-test" })}>
-        Socket Test
-      </button>
-      <button onClick={() => sendToBackground({ name: "socket-test2" })}>
-        Socket Test
-      </button>
     </div>
   )
 }

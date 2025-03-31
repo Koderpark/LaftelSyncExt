@@ -1,5 +1,6 @@
 import { sendToBackground } from "@plasmohq/messaging"
 import { useState } from "react"
+import { Pill } from "~component"
 
 export default function RoomSelect() {
   const [roomId, setRoomId] = useState("")
@@ -41,9 +42,11 @@ export default function RoomSelect() {
           placeholder="Room Name"
           onChange={(e) => setRoomName(e.target.value)}
         />
-        <button type="submit" onClick={submitCreate}>
-          Create
-        </button>
+        <Pill>
+          <button type="submit" onClick={submitCreate}>
+            Create
+          </button>
+        </Pill>
       </form>
     </div>
   )

@@ -8,7 +8,10 @@ export async function getRoomId(): Promise<number | null> {
 
   const ret = await fetch("http://localhost:3000/room/my", {
     method: "GET",
-    headers: { Authorization: `Bearer ${jwt}` }
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${jwt}`
+    }
   })
 
   if (ret.status === 200) {
@@ -40,4 +43,22 @@ export async function createRoom(roomName: string): Promise<void> {
     console.log("room created", roomId)
     await storage.set("roomId", roomId)
   }
+}
+
+export async function exitRoom(): Promise<boolean> {
+  const jwt = await storage.get("jwt")
+  if (!jwt) return false
+
+  const ret = await fetch("http://localhost:3000/room/exit", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${jwt}`
+    }
+  })
+
+  if (ret.status === 201) {
+    await storage.set("roomId", -1)
+  }
+  return ret.status === 201
 }
