@@ -9,27 +9,25 @@ const socket = io("http://localhost:8081/", {
   autoConnect: false
 })
 
-const shake = async () => {
-  if (socket.connected) socket.disconnect()
-
+export const shake = async () => {
+  if (socket.connected) return -1
   socket.auth = { token: await storage.get("jwt") }
   await socket.connect()
-
   const ret = await socket.emit("currentRoom")
   return 1
 }
 
-const send = async (event: string, data: any) => {
+export const send = async (event: string, data: any) => {
   if (!socket.connected) await shake()
   socket.emit(event, data)
 }
 
-socket.on("connect_error", (error) => {
-  console.log(error)
-})
+export const sendRes = async (event: string, data: any) => {
+  if (!socket.connected) await shake()
+  const ret = await socket.emitWithAck(event, data)
+  return ret
+}
 
-socket.on("connect", () => {
-  console.log("connected")
+socket.on("connect", async () => {
+  socket.emit("identify", await storage.get("jwt"))
 })
-
-export { socket, shake }
