@@ -6,25 +6,16 @@ import { Content, Header, Noti, NotiContext, Pill } from "~component"
 import { useStorage } from "@plasmohq/storage/hook"
 import RoomSelect from "./RoomSelect"
 import Room from "./Room"
+import { Full } from "~component/layout"
 
 export default function mainPopup(props) {
   const { Logout } = props
   const [roomId] = useStorage("roomId")
 
   return (
-    <div>
-      <Header>
-        <div className="grow">
-          <h1>Hello</h1>
-        </div>
-        <Pill>
-          <button onClick={Logout}>Logout</button>
-        </Pill>
-      </Header>
-      <Content>
-        {roomId != -1 && <Room />}
-        {roomId == -1 && <RoomSelect />}
-      </Content>
-    </div>
+    <Full>
+      {roomId != -1 && <Room Logout={Logout} />}
+      {roomId == -1 && <RoomSelect Logout={Logout} />}
+    </Full>
   )
 }

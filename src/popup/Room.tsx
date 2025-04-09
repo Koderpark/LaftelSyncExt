@@ -1,8 +1,9 @@
 import { useContext } from "react"
-import { NotiContext, Pill } from "~component"
+import { Content, Full, Header, Nav, NotiContext, Pill } from "~component"
 import { sendToBackground } from "@plasmohq/messaging"
 import { useStorage } from "@plasmohq/storage/hook"
-export default function Room() {
+export default function Room(props) {
+  const { Logout } = props
   const { openNoti } = useContext(NotiContext)
   const [roomId] = useStorage("roomId")
 
@@ -13,15 +14,31 @@ export default function Room() {
   }
 
   return (
-    <div>
-      <h1>Room {roomId}</h1>
-      <button onClick={() => openNoti("hello", "info")}>Open Noti</button>
-      <button onClick={() => sendToBackground({ name: "socket-test" })}>
-        Socket Test
-      </button>
-      <Pill>
-        <button onClick={() => exit()}>Exit</button>
-      </Pill>
-    </div>
+    <Full>
+      <Header>
+        <div className="grow">
+          <h1>Hello</h1>
+        </div>
+        <Pill>
+          <button onClick={Logout}>Logout</button>
+        </Pill>
+      </Header>
+      <Content>
+        <h1>Room {roomId}</h1>
+        <button onClick={() => openNoti("hello", "info")}>Open Noti</button>
+        <button onClick={() => sendToBackground({ name: "socket-test" })}>
+          Socket Test
+        </button>
+        <Pill>
+          <button onClick={() => exit()}>Exit</button>
+        </Pill>
+      </Content>
+      <Nav>
+        <button onClick={() => openNoti("hello", "info")}>Open Noti</button>
+        <button onClick={() => sendToBackground({ name: "socket-test" })}>
+          Socket Test
+        </button>
+      </Nav>
+    </Full>
   )
 }

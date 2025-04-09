@@ -1,8 +1,9 @@
 import { sendToBackground } from "@plasmohq/messaging"
 import { useState } from "react"
-import { Pill } from "~component"
+import { Content, Full, Header, Nav, Pill } from "~component"
 
-export default function RoomSelect() {
+export default function RoomSelect(props) {
+  const { Logout } = props
   const [roomId, setRoomId] = useState("")
   const [roomName, setRoomName] = useState("")
 
@@ -23,31 +24,46 @@ export default function RoomSelect() {
   }
 
   return (
-    <div>
-      <h1>Room Select</h1>
-      <form>
-        <input
-          type="text"
-          placeholder="Room ID"
-          onChange={(e) => setRoomId(e.target.value)}
-        />
-        <button type="submit" onClick={submitJoin}>
-          Join
-        </button>
-      </form>
-      or
-      <form>
-        <input
-          type="text"
-          placeholder="Room Name"
-          onChange={(e) => setRoomName(e.target.value)}
-        />
+    <Full>
+      <Header>
+        <div className="grow">
+          <h1>Hello</h1>
+        </div>
         <Pill>
-          <button type="submit" onClick={submitCreate}>
-            Create
-          </button>
+          <button onClick={Logout}>Logout</button>
         </Pill>
-      </form>
-    </div>
+      </Header>
+      <Content>
+        <h1>Room Select</h1>
+        <form>
+          <input
+            type="text"
+            placeholder="Room ID"
+            onChange={(e) => setRoomId(e.target.value)}
+          />
+          <button type="submit" onClick={submitJoin}>
+            Join
+          </button>
+        </form>
+        or
+        <form>
+          <input
+            type="text"
+            placeholder="Room Name"
+            onChange={(e) => setRoomName(e.target.value)}
+          />
+          <Pill>
+            <button type="submit" onClick={submitCreate}>
+              Create
+            </button>
+          </Pill>
+        </form>
+      </Content>
+      <Nav>
+        <button onClick={() => sendToBackground({ name: "socket-test" })}>
+          Socket Test
+        </button>
+      </Nav>
+    </Full>
   )
 }

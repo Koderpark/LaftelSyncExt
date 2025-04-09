@@ -1,6 +1,6 @@
 import "../style.css"
 
-import { Noti } from "~component"
+import { Full, Noti } from "~component"
 import { useContext, useEffect, useState } from "react"
 
 import { sendToBackground } from "@plasmohq/messaging"
@@ -13,7 +13,7 @@ import MainPopup from "~popup/Main"
 export default function notiWrapper() {
   return (
     <Noti>
-      <div className="w-[320px] h-[480px] bg-gray-100 p-0">
+      <div className="w-[320px] h-[480px] p-0">
         <IndexPopup />
       </div>
     </Noti>
@@ -43,9 +43,10 @@ export function IndexPopup(props) {
   }
 
   return (
-    <div>
+    <Full>
       {jwt && <MainPopup Logout={Logout} />}
       {!jwt && <LoginPopup Login={Login} />}
-    </div>
+    </Full>
   )
 }
+
