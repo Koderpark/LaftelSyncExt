@@ -12,9 +12,16 @@ const socket = io("http://localhost:8081/", {
 export const shake = async () => {
   if (socket.connected) return -1
   socket.auth = { token: await storage.get("jwt") }
+
   await socket.connect()
-  const ret = await socket.emit("currentRoom")
+
+  if (!socket.connected) return -1
   return 1
+}
+
+export const exitSocket = async () => {
+  if (!socket.connected) return
+  await socket.disconnect()
 }
 
 export const send = async (event: string, data: any) => {
@@ -28,6 +35,4 @@ export const sendRes = async (event: string, data: any) => {
   return ret
 }
 
-socket.on("connect", async () => {
-  socket.emit("identify", await storage.get("jwt"))
-})
+socket.on("connect", async () => {})

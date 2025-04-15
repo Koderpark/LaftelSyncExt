@@ -1,4 +1,5 @@
 import { Storage } from "@plasmohq/storage"
+import { exitSocket } from "./socket"
 
 const storage = new Storage()
 
@@ -16,8 +17,13 @@ export async function getRoomId(): Promise<number | null> {
 
   if (ret.status === 200) {
     const roomId = ret.json()["roomId"]
-    await storage.set("roomId", roomId)
-    return roomId
+    if (roomId !== -1) {
+      await storage.set("roomId", roomId)
+      return roomId
+    } else {
+      await storage.set("roomId", null)
+      return null
+    }
   }
   return null
 }
@@ -56,9 +62,7 @@ export async function exitRoom(): Promise<boolean> {
       Authorization: `Bearer ${jwt}`
     }
   })
-
-  if (ret.status === 201) {
-    await storage.set("roomId", -1)
-  }
+  await storage.set("roomId", null)
+  await exitSocket()
   return ret.status === 201
 }

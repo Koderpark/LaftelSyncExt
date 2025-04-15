@@ -14,8 +14,8 @@ export default function mainPopup(props) {
 
   return (
     <Full>
-      {roomId != -1 && <Room Logout={Logout} />}
-      {roomId == -1 && <RoomSelect Logout={Logout} />}
+      {roomId && <Room Logout={Logout} />}
+      {!roomId && <RoomSelect Logout={Logout} />}
     </Full>
   )
 }
