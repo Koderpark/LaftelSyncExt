@@ -9,10 +9,10 @@ export default function RoomSelect(props) {
 
   const submitJoin = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
-    // sendToBackground({
-    //   name: "room-join",
-    //   body: { roomId }
-    // })
+    sendToBackground({
+      name: "room-join",
+      body: { roomId }
+    })
   }
 
   const submitCreate = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -41,9 +41,11 @@ export default function RoomSelect(props) {
             placeholder="Room ID"
             onChange={(e) => setRoomId(e.target.value)}
           />
-          <button type="submit" onClick={submitJoin}>
-            Join
-          </button>
+          <Pill>
+            <button type="submit" onClick={submitJoin}>
+              Join
+            </button>
+          </Pill>
         </form>
         or
         <form>

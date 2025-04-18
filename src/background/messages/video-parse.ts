@@ -1,5 +1,4 @@
 import type { PlasmoMessaging } from "@plasmohq/messaging"
-
 import { send } from "../socket"
 
 const parseVideo = () => {

@@ -66,3 +66,22 @@ export async function exitRoom(): Promise<boolean> {
   await exitSocket()
   return ret.status === 201
 }
+
+export async function joinRoom(roomId: number): Promise<boolean> {
+  const jwt = await storage.get("jwt")
+  if (!jwt) return false
+
+  const ret = await fetch("http://localhost:3000/room/join", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${jwt}`
+    },
+    body: JSON.stringify({ roomId })
+  })
+
+  if (ret.status === 201) {
+    await storage.set("roomId", roomId)
+  }
+  return ret.status === 201
+}
