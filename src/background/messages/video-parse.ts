@@ -19,7 +19,6 @@ const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
     target: { tabId: tab[0].id },
     func: parseVideo
   })
-
   send("updateVid", ret[0].result)
 }
 
