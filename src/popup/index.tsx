@@ -26,8 +26,8 @@ export function IndexPopup(props) {
 
   const Login = async (id: string, pw: string) => {
     const res = await sendToBackground({
-      name: "auth-login",
-      body: { id, pw: "P@ssw0rd" }
+      name: "auth",
+      body: { msg: "login", id, pw: "P@ssw0rd" }
     })
     if (res) openNoti("Login success", "success")
     else openNoti("Login failed", "error")
@@ -35,7 +35,8 @@ export function IndexPopup(props) {
 
   const Logout = async () => {
     const res = await sendToBackground({
-      name: "auth-logout"
+      name: "auth",
+      body: { msg: "logout" }
     })
 
     if (res) openNoti("Logout success", "success")

@@ -10,16 +10,16 @@ export default function RoomSelect(props) {
   const submitJoin = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
     sendToBackground({
-      name: "room-join",
-      body: { roomId }
+      name: "room",
+      body: { msg: "join", roomId }
     })
   }
 
   const submitCreate = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
     sendToBackground({
-      name: "room-create",
-      body: { roomName }
+      name: "room",
+      body: { msg: "create", roomName }
     })
   }
 

@@ -12,7 +12,7 @@ export default function mainPopup(props) {
   const { Logout } = props
   const [roomId] = useStorage("roomId")
 
-  sendToBackground({ name: "room-renew" })
+  sendToBackground({ name: "room", body: { msg: "renew" } })
 
   return (
     <Full>
