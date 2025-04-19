@@ -12,6 +12,8 @@ export default function mainPopup(props) {
   const { Logout } = props
   const [roomId] = useStorage("roomId")
 
+  sendToBackground({ name: "room", body: { msg: "renew" } })
+
   return (
     <Full>
       {roomId && <Room Logout={Logout} />}

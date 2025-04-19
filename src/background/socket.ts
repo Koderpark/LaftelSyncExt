@@ -1,6 +1,6 @@
 import io from "socket.io-client"
 import { Storage } from "@plasmohq/storage"
-import { checkJWT } from "./validate"
+import { updateVideo, type VideoData } from "./video"
 
 const storage = new Storage()
 const socket = io("http://localhost:8081/", {
@@ -36,3 +36,7 @@ export const sendRes = async (event: string, data: any) => {
 }
 
 socket.on("connect", async () => {})
+
+socket.on("updateVid", (data: VideoData) => {
+  updateVideo(data)
+})

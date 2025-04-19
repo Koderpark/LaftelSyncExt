@@ -8,7 +8,7 @@ export default function Room(props) {
   const [roomId] = useStorage("roomId")
 
   const exit = async () => {
-    const res = await sendToBackground({ name: "room-exit" })
+    const res = await sendToBackground({ name: "room", body: { msg: "exit" } })
     if (res) openNoti("Exit success", "success")
     else openNoti("Exit failed", "error")
   }
@@ -35,7 +35,10 @@ export default function Room(props) {
       </Content>
       <Nav>
         <button onClick={() => openNoti("hello", "info")}>Open Noti</button>
-        <button onClick={() => sendToBackground({ name: "video-parse" })}>
+        <button
+          onClick={() =>
+            sendToBackground({ name: "video", body: { msg: "parse" } })
+          }>
           parse video
         </button>
       </Nav>

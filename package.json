@@ -38,7 +38,8 @@
     "permissions": [
       "tabs",
       "webRequest",
-      "webRequestBlocking"
+      "webRequestBlocking",
+      "scripting"
     ]
   }
 }

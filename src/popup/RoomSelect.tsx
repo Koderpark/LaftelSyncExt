@@ -6,20 +6,21 @@ export default function RoomSelect(props) {
   const { Logout } = props
   const [roomId, setRoomId] = useState("")
   const [roomName, setRoomName] = useState("")
+  const [roomPW, setRoomPW] = useState("")
 
   const submitJoin = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
-    // sendToBackground({
-    //   name: "room-join",
-    //   body: { roomId }
-    // })
+    sendToBackground({
+      name: "room",
+      body: { msg: "join", roomId, roomPW }
+    })
   }
 
   const submitCreate = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
     sendToBackground({
-      name: "room-create",
-      body: { roomName }
+      name: "room",
+      body: { msg: "create", roomName }
     })
   }
 
@@ -41,9 +42,16 @@ export default function RoomSelect(props) {
             placeholder="Room ID"
             onChange={(e) => setRoomId(e.target.value)}
           />
-          <button type="submit" onClick={submitJoin}>
-            Join
-          </button>
+          <input
+            type="password"
+            placeholder="Room PW"
+            onChange={(e) => setRoomPW(e.target.value)}
+          />
+          <Pill>
+            <button type="submit" onClick={submitJoin}>
+              Join
+            </button>
+          </Pill>
         </form>
         or
         <form>
