@@ -15,7 +15,7 @@ const createHandler: PlasmoMessaging.MessageHandler = async (req, res) => {
 }
 
 const joinHandler: PlasmoMessaging.MessageHandler = async (req, res) => {
-  const message = await joinRoom(req.body.roomId)
+  const message = await joinRoom(req.body.roomId, req.body.roomPW)
   res.send(message)
 }
 

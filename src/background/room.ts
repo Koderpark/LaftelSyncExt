@@ -67,7 +67,10 @@ export async function exitRoom(): Promise<boolean> {
   return ret.status === 201
 }
 
-export async function joinRoom(roomId: number): Promise<boolean> {
+export async function joinRoom(
+  roomId: number,
+  roomPW?: string
+): Promise<boolean> {
   const jwt = await storage.get("jwt")
   if (!jwt) return false
 
@@ -77,8 +80,10 @@ export async function joinRoom(roomId: number): Promise<boolean> {
       "Content-Type": "application/json",
       Authorization: `Bearer ${jwt}`
     },
-    body: JSON.stringify({ roomId })
+    body: JSON.stringify({ roomId: roomId, password: roomPW })
   })
+
+  console.log("joinRoom", ret)
 
   if (ret.status === 201) {
     await storage.set("roomId", roomId)
