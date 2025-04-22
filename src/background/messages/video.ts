@@ -6,14 +6,14 @@ const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
   const { msg } = req.body
 
   if (msg == "parse") parseHandler(req, res)
-  if (msg == "test") testHandler(req, res)
+  if (msg == "update") updateHandler(req, res)
 }
 
 const parseHandler: PlasmoMessaging.MessageHandler = async (req, res) => {
-  send("updateVid", await parseVideo())
+  parseVideo()
 }
 
-const testHandler: PlasmoMessaging.MessageHandler = async (req, res) => {
+const updateHandler: PlasmoMessaging.MessageHandler = async (req, res) => {
   send("updateVid", req.body.data)
 }
 

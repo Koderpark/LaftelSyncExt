@@ -10,7 +10,7 @@ const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
 }
 
 const createHandler: PlasmoMessaging.MessageHandler = async (req, res) => {
-  const message = await createRoom(req.body.roomName)
+  const message = await createRoom(req.body.roomName, req.body.roomPW)
   res.send(message)
 }
 

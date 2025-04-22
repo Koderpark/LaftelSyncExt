@@ -16,7 +16,7 @@ export const parse = async () => {
 
   const res = await sendToBackground({
     name: "video",
-    body: { msg: "test", data: { url, speed, time, isPaused } }
+    body: { msg: "update", data: { url, speed, time, isPaused } }
   })
 
   return { url, speed, time, isPaused }
@@ -26,4 +26,8 @@ document.addEventListener("keydown", (e) => {
   if (e.key == "Enter") {
     parse()
   }
+})
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.msg == "parse") parse()
 })

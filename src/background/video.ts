@@ -5,23 +5,9 @@ export type VideoData = {
   isPaused: boolean
 }
 
-export const parseVideo = async (): Promise<VideoData> => {
+export const parseVideo = async (): Promise<void> => {
   const tab = await chrome.tabs.query({ active: true, currentWindow: true })
-  const ret = await chrome.scripting.executeScript({
-    target: { tabId: tab[0].id },
-    func: () => {
-      const video = document.querySelector("video")
-      if (!video) return
-
-      const url = window.location.href
-      const speed = video.playbackRate
-      const time = video.currentTime
-      const isPaused = video.paused
-
-      return { url, speed, time, isPaused }
-    }
-  })
-  return ret[0].result
+  await chrome.tabs.sendMessage(tab[0].id, { msg: "parse" })
 }
 
 export const updateVideo = async (data: VideoData) => {

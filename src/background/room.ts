@@ -28,7 +28,10 @@ export async function getRoomId(): Promise<number | null> {
   return null
 }
 
-export async function createRoom(roomName: string): Promise<void> {
+export async function createRoom(
+  roomName: string,
+  roomPW: string
+): Promise<void> {
   console.log("createRoom", roomName)
   const jwt = await storage.get("jwt")
   if (!jwt) return
@@ -39,7 +42,7 @@ export async function createRoom(roomName: string): Promise<void> {
       "Content-Type": "application/json",
       Authorization: `Bearer ${jwt}`
     },
-    body: JSON.stringify({ roomName })
+    body: JSON.stringify({ roomName, password: roomPW })
   })
 
   console.log("createRoom", ret)
