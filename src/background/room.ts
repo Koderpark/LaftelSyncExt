@@ -1,5 +1,6 @@
 import { Storage } from "@plasmohq/storage"
 import { exitSocket } from "./socket"
+import { checkRoomOwner } from "./validate"
 
 const storage = new Storage()
 
@@ -92,4 +93,8 @@ export async function joinRoom(
     await storage.set("roomId", roomId)
   }
   return ret.status === 201
+}
+
+export async function checkOwner() {
+  await storage.set("isRoomOwner", await checkRoomOwner())
 }
