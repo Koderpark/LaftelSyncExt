@@ -6,6 +6,7 @@ export default function Room(props) {
   const { Logout } = props
   const { openNoti } = useContext(NotiContext)
   const [roomId] = useStorage("roomId")
+  const [roomOwner] = useStorage("roomOwner")
 
   const exit = async () => {
     const res = await sendToBackground({ name: "room", body: { msg: "exit" } })
