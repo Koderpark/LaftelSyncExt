@@ -1,8 +1,10 @@
 import { sendToBackground } from "@plasmohq/messaging"
 import { useState } from "react"
-import { Content, Full, Header, Nav, Pill } from "~component"
+import { Content, Full, Nav, Pill } from "~component"
+import Navbar from "~component/nav"
+import Header from "~popup/layout/header"
 
-export default function RoomSelect(props) {
+export default function MainPopup(props) {
   const { Logout } = props
   const [roomId, setRoomId] = useState("")
   const [roomName, setRoomName] = useState("")
@@ -26,14 +28,7 @@ export default function RoomSelect(props) {
 
   return (
     <Full>
-      <Header>
-        <div className="grow">
-          <h1>Hello</h1>
-        </div>
-        <Pill>
-          <button onClick={Logout}>Logout</button>
-        </Pill>
-      </Header>
+      <Header />
       <Content>
         <h1>Room Select</h1>
         <form>
@@ -67,11 +62,7 @@ export default function RoomSelect(props) {
           </Pill>
         </form>
       </Content>
-      <Nav>
-        <button onClick={() => sendToBackground({ name: "socket-test" })}>
-          Socket Test
-        </button>
-      </Nav>
+      <Navbar />
     </Full>
   )
 }

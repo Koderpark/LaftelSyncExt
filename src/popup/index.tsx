@@ -2,14 +2,14 @@ import "../style.css"
 
 import { Full, Noti } from "~component"
 import { useContext, useEffect, useState } from "react"
-
 import { sendToBackground } from "@plasmohq/messaging"
 import { useStorage } from "@plasmohq/storage/hook"
-
 import { NotiContext } from "~component"
-import LoginPopup from "~popup/Login"
-import MainPopup from "~popup/Main"
 
+import LoginPopup from "~popup/page/Login"
+import MainPopup from "~popup/page/Main"
+import RoomPopup from "~popup/page/Room"
+import SettingPopup from "~popup/page/Setting"
 export default function notiWrapper() {
   return (
     <Noti>
@@ -22,6 +22,7 @@ export default function notiWrapper() {
 
 export function IndexPopup(props) {
   const [jwt] = useStorage("jwt")
+  const [page, setPage] = useStorage("page", (v) => v || "login")
   const { openNoti } = useContext(NotiContext)
 
   const Login = async (id: string, pw: string) => {
@@ -29,8 +30,10 @@ export function IndexPopup(props) {
       name: "auth",
       body: { msg: "login", id, pw: "P@ssw0rd" }
     })
-    if (res) openNoti("Login success", "success")
-    else openNoti("Login failed", "error")
+    if (res) {
+      openNoti("Login success", "success")
+      setPage("main")
+    } else openNoti("Login failed", "error")
   }
 
   const Logout = async () => {
@@ -39,15 +42,22 @@ export function IndexPopup(props) {
       body: { msg: "logout" }
     })
 
-    if (res) openNoti("Logout success", "success")
-    else openNoti("Logout failed", "error")
+    if (res) {
+      openNoti("Logout success", "success")
+      setPage("login")
+    } else openNoti("Logout failed", "error")
+  }
+
+  const Navbar = () => {
+    return <div>Navbar</div>
   }
 
   return (
     <Full>
-      {jwt && <MainPopup Logout={Logout} />}
-      {!jwt && <LoginPopup Login={Login} />}
+      {page == "login" && <LoginPopup Login={Login} />}
+      {page == "main" && <MainPopup />}
+      {page == "room" && <RoomPopup />}
+      {page == "setting" && <SettingPopup />}
     </Full>
   )
 }
-

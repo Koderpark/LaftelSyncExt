@@ -1,8 +1,11 @@
 import { useContext, useEffect } from "react"
-import { Content, Full, Header, Nav, NotiContext, Pill } from "~component"
+import { Content, Full, Nav, NotiContext, Pill } from "~component"
 import { sendToBackground } from "@plasmohq/messaging"
 import { useStorage } from "@plasmohq/storage/hook"
-export default function Room(props) {
+import Navbar from "~component/nav"
+import Header from "~popup/layout/header"
+
+export default function RoomPopup(props) {
   const { Logout } = props
   const { openNoti } = useContext(NotiContext)
   const [roomId] = useStorage("roomId")
@@ -27,14 +30,7 @@ export default function Room(props) {
 
   return (
     <Full>
-      <Header>
-        <div className="grow">
-          <h1>Hello</h1>
-        </div>
-        <Pill>
-          <button onClick={Logout}>Logout</button>
-        </Pill>
-      </Header>
+      <Header />
       <Content>
         <h1>Room {roomId}</h1>
         {isRoomOwner && <h1>you are owner of this room</h1>}
@@ -57,6 +53,7 @@ export default function Room(props) {
           parse video
         </button>
       </Nav>
+      <Navbar />
     </Full>
   )
 }

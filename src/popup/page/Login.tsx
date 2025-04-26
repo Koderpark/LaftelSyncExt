@@ -1,6 +1,8 @@
 import { useState } from "react"
 
-import { Content, Header } from "../component"
+import { Content } from "../../component"
+import { useStorage } from "@plasmohq/storage/hook"
+import Header from "~popup/layout/header"
 
 export default function loginPopup(props) {
   const { Login } = props
@@ -9,9 +11,7 @@ export default function loginPopup(props) {
 
   return (
     <div className="w-full h-full flex flex-col p-0">
-      <Header>
-        <h1>LaftelSync</h1>
-      </Header>
+      <Header />
       <Content>
         <form className="w-full flex flex-col gap-4">
           <input
