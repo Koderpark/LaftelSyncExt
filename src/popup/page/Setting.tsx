@@ -1,9 +1,8 @@
 import { useContext, useEffect } from "react"
-import { Content, Full, Nav, NotiContext, Pill } from "~component"
+import { Content, Full, NotiContext } from "~component"
 import { sendToBackground } from "@plasmohq/messaging"
 import { useStorage } from "@plasmohq/storage/hook"
-import Navbar from "~component/nav"
-import Header from "~popup/layout/header"
+import { PillBtn } from "~component/pill"
 
 export default function SettingPopup(props) {
   const { Logout } = props
@@ -30,11 +29,10 @@ export default function SettingPopup(props) {
 
   return (
     <Full>
-      <Header />
       <Content>
         <h1>this is setting page</h1>
+        <PillBtn onClick={Logout}>Logout</PillBtn>
       </Content>
-      <Navbar />
     </Full>
   )
 }

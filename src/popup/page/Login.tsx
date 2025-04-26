@@ -11,7 +11,6 @@ export default function loginPopup(props) {
 
   return (
     <div className="w-full h-full flex flex-col p-0">
-      <Header />
       <Content>
         <form className="w-full flex flex-col gap-4">
           <input

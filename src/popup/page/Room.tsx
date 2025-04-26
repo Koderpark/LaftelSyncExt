@@ -2,7 +2,7 @@ import { useContext, useEffect } from "react"
 import { Content, Full, Nav, NotiContext, Pill } from "~component"
 import { sendToBackground } from "@plasmohq/messaging"
 import { useStorage } from "@plasmohq/storage/hook"
-import Navbar from "~component/nav"
+import Navbar from "~popup/layout/nav"
 import Header from "~popup/layout/header"
 
 export default function RoomPopup(props) {
@@ -30,7 +30,6 @@ export default function RoomPopup(props) {
 
   return (
     <Full>
-      <Header />
       <Content>
         <h1>Room {roomId}</h1>
         {isRoomOwner && <h1>you are owner of this room</h1>}
@@ -53,7 +52,6 @@ export default function RoomPopup(props) {
           parse video
         </button>
       </Nav>
-      <Navbar />
     </Full>
   )
 }

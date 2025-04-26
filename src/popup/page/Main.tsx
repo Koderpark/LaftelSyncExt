@@ -1,7 +1,7 @@
 import { sendToBackground } from "@plasmohq/messaging"
 import { useState } from "react"
 import { Content, Full, Nav, Pill } from "~component"
-import Navbar from "~component/nav"
+import Navbar from "~popup/layout/nav"
 import Header from "~popup/layout/header"
 
 export default function MainPopup(props) {
@@ -28,7 +28,6 @@ export default function MainPopup(props) {
 
   return (
     <Full>
-      <Header />
       <Content>
         <h1>Room Select</h1>
         <form>
@@ -62,7 +61,6 @@ export default function MainPopup(props) {
           </Pill>
         </form>
       </Content>
-      <Navbar />
     </Full>
   )
 }

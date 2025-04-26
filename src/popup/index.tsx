@@ -10,6 +10,11 @@ import LoginPopup from "~popup/page/Login"
 import MainPopup from "~popup/page/Main"
 import RoomPopup from "~popup/page/Room"
 import SettingPopup from "~popup/page/Setting"
+
+import Header from "~popup/layout/header"
+import Navbar from "~popup/layout/nav"
+import { getRoomId } from "~background/room"
+
 export default function notiWrapper() {
   return (
     <Noti>
@@ -22,9 +27,9 @@ export default function notiWrapper() {
 
 export function IndexPopup(props) {
   const [jwt] = useStorage("jwt")
-  const [page, setPage] = useStorage("page", (v) => v || "login")
+  const [page, setPage] = useStorage("page")
   const { openNoti } = useContext(NotiContext)
-
+  const [roomId] = useStorage("roomId")
   const Login = async (id: string, pw: string) => {
     const res = await sendToBackground({
       name: "auth",
@@ -48,16 +53,14 @@ export function IndexPopup(props) {
     } else openNoti("Logout failed", "error")
   }
 
-  const Navbar = () => {
-    return <div>Navbar</div>
-  }
-
   return (
     <Full>
+      <Header />
       {page == "login" && <LoginPopup Login={Login} />}
-      {page == "main" && <MainPopup />}
-      {page == "room" && <RoomPopup />}
-      {page == "setting" && <SettingPopup />}
+      {page == "main" && !roomId && <MainPopup />}
+      {page == "main" && roomId && <RoomPopup />}
+      {page == "setting" && <SettingPopup Logout={Logout} />}
+      <Navbar />
     </Full>
   )
 }
