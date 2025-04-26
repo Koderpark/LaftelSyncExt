@@ -20,7 +20,7 @@ export default function RoomSelect(props) {
     event.preventDefault()
     sendToBackground({
       name: "room",
-      body: { msg: "create", roomName }
+      body: { msg: "create", roomName, roomPW }
     })
   }
 

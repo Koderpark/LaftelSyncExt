@@ -1,4 +1,4 @@
-import { useContext, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 
 import { sendToBackground } from "@plasmohq/messaging"
 
@@ -12,7 +12,9 @@ export default function mainPopup(props) {
   const { Logout } = props
   const [roomId] = useStorage("roomId")
 
-  sendToBackground({ name: "room", body: { msg: "renew" } })
+  useEffect(() => {
+    sendToBackground({ name: "room", body: { msg: "renew" } })
+  }, [])
 
   return (
     <Full>
