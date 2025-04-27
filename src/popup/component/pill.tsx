@@ -20,7 +20,7 @@ export function PillBtn(props) {
   } else {
     return (
       <div
-        className="flex items-center justify-center rounded-full bg-gray-400 py-2 px-4 font-bold cursor-pointer"
+        className="flex items-center justify-center rounded-full bg-gray-900 py-2 px-4 font-bold cursor-pointer"
         onClick={onClick}>
         {children}
       </div>

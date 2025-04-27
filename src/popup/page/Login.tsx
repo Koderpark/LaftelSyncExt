@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-import { Content } from "../../component"
+import { Content } from "../component"
 import { useStorage } from "@plasmohq/storage/hook"
 import Header from "~popup/layout/header"
 

@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react"
-import { Content, Full, Nav, NotiContext, Pill } from "~component"
+import { Content, Full, Nav, NotiContext, Pill } from "~popup/component"
 import { sendToBackground } from "@plasmohq/messaging"
 import { useStorage } from "@plasmohq/storage/hook"
 import Navbar from "~popup/layout/nav"

@@ -1,10 +1,10 @@
 import "../style.css"
 
-import { Full, Noti } from "~component"
+import { Full, Noti } from "~popup/component"
 import { useContext, useEffect, useState } from "react"
 import { sendToBackground } from "@plasmohq/messaging"
 import { useStorage } from "@plasmohq/storage/hook"
-import { NotiContext } from "~component"
+import { NotiContext } from "~popup/component"
 
 import LoginPopup from "~popup/page/Login"
 import MainPopup from "~popup/page/Main"

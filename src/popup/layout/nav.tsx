@@ -1,5 +1,5 @@
 import { useStorage } from "@plasmohq/storage/hook"
-import { PillBtn } from "../../component/pill"
+import { PillBtn } from "../component/pill"
 
 export default function Navbar() {
   const [page, setPage] = useStorage("page")
@@ -9,15 +9,19 @@ export default function Navbar() {
   }
 
   return (
-    <div className="w-full h-14 flex items-center justify-between bg-gray-800 text-white px-4">
-      <PillBtn isActive={page == "main"} onClick={() => changePage("main")}>
-        {roomId ? "방 나가기" : "방 생성/가입"}
-      </PillBtn>
-      <PillBtn
-        isActive={page == "setting"}
-        onClick={() => changePage("setting")}>
-        setting
-      </PillBtn>
+    <div>
+      {page != "login" && (
+        <div className="w-full h-16 flex items-center justify-between bg-gray-800 text-white px-4">
+          <PillBtn isActive={page == "main"} onClick={() => changePage("main")}>
+            {roomId ? "방 설정" : "방 생성/가입"}
+          </PillBtn>
+          <PillBtn
+            isActive={page == "setting"}
+            onClick={() => changePage("setting")}>
+            설정
+          </PillBtn>
+        </div>
+      )}
     </div>
   )
 }
