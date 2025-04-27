@@ -15,6 +15,7 @@ import Header from "~popup/layout/header"
 import Navbar from "~popup/layout/nav"
 import { getRoomId } from "~background/room"
 import { Noti } from "./component/noti"
+import ChatPopup from "./page/Chat"
 
 export default function notiWrapper() {
   return (
@@ -37,6 +38,7 @@ export function IndexPopup(props) {
       {page == "main" && !roomId && <MainPopup />}
       {page == "main" && roomId && <RoomPopup />}
       {page == "setting" && <SettingPopup />}
+      {page == "chat" && <ChatPopup />}
       <Navbar />
     </Full>
   )

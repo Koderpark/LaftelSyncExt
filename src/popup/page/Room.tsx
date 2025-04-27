@@ -6,26 +6,18 @@ import { useStorage } from "@plasmohq/storage/hook"
 import { NotiContext } from "~popup/component/noti"
 
 export default function RoomPopup(props) {
-  const { Logout } = props
-  const { openNoti } = useContext(NotiContext)
+  const { openNoti, message } = useContext(NotiContext)
   const [roomId] = useStorage("roomId")
   const [isRoomOwner] = useStorage("isRoomOwner")
 
   const exit = async () => {
-    const res = await sendToBackground({ name: "room", body: { msg: "exit" } })
+    const res = await message("room/exit")
     if (res) openNoti("Exit success", "success")
     else openNoti("Exit failed", "error")
   }
 
-  const checkOwner = async () => {
-    await sendToBackground({
-      name: "room",
-      body: { msg: "checkOwner" }
-    })
-  }
-
   useEffect(() => {
-    checkOwner()
+    message("room/checkOwner")
   }, [])
 
   return (
@@ -42,16 +34,16 @@ export default function RoomPopup(props) {
         <Pill>
           <button onClick={() => exit()}>Exit</button>
         </Pill>
+        <div>
+          <button onClick={() => openNoti("hello", "info")}>Open Noti</button>
+          <button
+            onClick={() =>
+              sendToBackground({ name: "video", body: { msg: "parse" } })
+            }>
+            parse video
+          </button>
+        </div>
       </Content>
-      <div>
-        <button onClick={() => openNoti("hello", "info")}>Open Noti</button>
-        <button
-          onClick={() =>
-            sendToBackground({ name: "video", body: { msg: "parse" } })
-          }>
-          parse video
-        </button>
-      </div>
     </Full>
   )
 }

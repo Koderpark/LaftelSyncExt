@@ -45,8 +45,6 @@ export async function checkRoomOwner(): Promise<boolean> {
   })
   const user = await userId.json()
 
-  // clientAlert(`ownerId: ${room.ownerId}, userId: ${user.userId}`)
-
   return room.ownerId === user.userId
 }
 

@@ -1,7 +1,8 @@
 import { sendToBackground } from "@plasmohq/messaging"
 import { useState } from "react"
 import { Content, Full } from "~popup/component/layout"
-import { PasswordField, StringField, SubmitBtn } from "~popup/component/form"
+import { PasswordField, StringField } from "~popup/component/form"
+import { Btn } from "~popup/component/button"
 
 export default function MainPopup(props) {
   const { Logout } = props
@@ -44,8 +45,8 @@ export default function MainPopup(props) {
           </div>
           <PasswordField label="Room PW" value={PW} setValue={setPW} />
           <div className="flex gap-2">
-            <SubmitBtn label="Join" onClick={submitJoin} />
-            <SubmitBtn label="Create" onClick={submitCreate} />
+            <Btn label="Join" onClick={submitJoin} submit={false} />
+            <Btn label="Create" onClick={submitCreate} submit={false} />
           </div>
         </div>
       </Content>

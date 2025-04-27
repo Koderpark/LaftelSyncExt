@@ -97,4 +97,5 @@ export async function joinRoom(
 
 export async function checkOwner() {
   await storage.set("isRoomOwner", await checkRoomOwner())
+  return true
 }

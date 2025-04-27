@@ -4,12 +4,10 @@ import { useStorage } from "@plasmohq/storage/hook"
 import { PillBtn } from "~popup/component/pill"
 import { NotiContext } from "~popup/component/noti"
 import { Content, Full } from "~popup/component/layout"
+import { Btn } from "~popup/component/button"
 
 export default function SettingPopup(props) {
-  const { Logout } = props
   const { openNoti, message } = useContext(NotiContext)
-  const [roomId] = useStorage("roomId")
-  const [isRoomOwner] = useStorage("isRoomOwner")
 
   const handleLogout = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
@@ -31,8 +29,13 @@ export default function SettingPopup(props) {
   return (
     <Full>
       <Content>
-        <h1>this is setting page</h1>
-        <PillBtn onClick={handleLogout}>Logout</PillBtn>
+        <Full>
+          <h1>this is setting page</h1>
+        </Full>
+        <div className="flex flex-col gap-2">
+          <Btn label="Logout" onClick={handleLogout} type="option" />
+          <Btn label="Logout" onClick={handleLogout} type="option" />
+        </div>
       </Content>
     </Full>
   )

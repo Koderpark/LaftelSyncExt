@@ -1,9 +1,10 @@
 import { useContext, useState } from "react"
 import { sendToBackground } from "@plasmohq/messaging"
 import { Content } from "../component/layout"
-import { StringField, PasswordField, SubmitBtn } from "../component/form"
+import { StringField, PasswordField } from "../component/form"
 import { NotiContext } from "../component/noti"
 import { useStorage } from "@plasmohq/storage/hook"
+import { Btn } from "../component/button"
 
 export default function loginPopup(props) {
   const [id, setId] = useState("")
@@ -17,13 +18,26 @@ export default function loginPopup(props) {
     if (res) openNoti("로그인 성공", "success")
   }
 
+  const handleSignup = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    setPage("signup")
+  }
+
   return (
     <div className="w-full h-full flex flex-col p-0">
       <Content>
         <form className="w-full flex flex-col gap-2">
           <StringField label="Username" value={id} setValue={setId} />
           <PasswordField label="Password" value={pw} setValue={setPw} />
-          <SubmitBtn label="Login" onClick={handleLogin} />
+          <div className="flex gap-2">
+            <Btn label="Login" onClick={handleLogin} />
+            <Btn
+              label="Signup"
+              onClick={handleSignup}
+              submit={false}
+              type="option"
+            />
+          </div>
         </form>
       </Content>
     </div>

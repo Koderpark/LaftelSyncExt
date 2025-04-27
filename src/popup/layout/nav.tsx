@@ -4,20 +4,22 @@ import { PillBtn } from "../component/pill"
 export default function Navbar() {
   const [page, setPage] = useStorage("page")
   const [roomId] = useStorage("roomId")
-  const changePage = (page: "room" | "setting" | "main") => {
-    setPage(page)
-  }
+
+  const isLogin = page != "login"
 
   return (
     <div>
-      {page != "login" && (
-        <div className="w-full h-16 flex items-center justify-between bg-gray-800 text-white px-4">
-          <PillBtn isActive={page == "main"} onClick={() => changePage("main")}>
+      {isLogin && (
+        <div className="w-full h-16 flex items-center justify-between bg-gray-800 text-white px-4 shadow-md">
+          <PillBtn isActive={page == "main"} onClick={() => setPage("main")}>
             {roomId ? "방 설정" : "방 생성/가입"}
+          </PillBtn>
+          <PillBtn isActive={page == "chat"} onClick={() => setPage("chat")}>
+            채팅
           </PillBtn>
           <PillBtn
             isActive={page == "setting"}
-            onClick={() => changePage("setting")}>
+            onClick={() => setPage("setting")}>
             설정
           </PillBtn>
         </div>
