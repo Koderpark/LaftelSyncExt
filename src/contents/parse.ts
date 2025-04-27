@@ -1,8 +1,11 @@
 import { sendToBackground } from "@plasmohq/messaging"
 import type { PlasmoCSConfig } from "plasmo"
+import { Storage } from "@plasmohq/storage"
+
+const storage = new Storage()
 
 export const config: PlasmoCSConfig = {
-  matches: ["https://laftel.net/**"]
+  matches: ["https://laftel.net/**", "https://www.youtube.com/**"]
 }
 
 export const parse = async () => {
@@ -22,12 +25,20 @@ export const parse = async () => {
   return { url, speed, time, isPaused }
 }
 
-document.addEventListener("keydown", (e) => {
-  if (e.key == "Enter") {
-    parse()
-  }
-})
+const changeHandler = async () => {
+  const isRoomOwner = await storage.get("isRoomOwner")
+  if (!isRoomOwner) return
+
+  parse()
+}
+
+const vid = document.querySelector("video")
+
+vid?.addEventListener("ratechange", changeHandler)
+vid?.addEventListener("pause", changeHandler)
+vid?.addEventListener("play", changeHandler)
+vid?.addEventListener("canplay", changeHandler)
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.msg == "parse") parse()
+  if (request.msg == "parse") changeHandler()
 })
