@@ -27,40 +27,16 @@ export default function notiWrapper() {
 }
 
 export function IndexPopup(props) {
-  const [jwt] = useStorage("jwt")
-  const [page, setPage] = useStorage("page")
-  const { openNoti } = useContext(NotiContext)
+  const [page] = useStorage("page")
   const [roomId] = useStorage("roomId")
-  const Login = async (id: string, pw: string) => {
-    const res = await sendToBackground({
-      name: "auth",
-      body: { msg: "login", id, pw: "P@ssw0rd" }
-    })
-    if (res) {
-      openNoti("Login success", "success")
-      setPage("main")
-    } else openNoti("Login failed", "error")
-  }
-
-  const Logout = async () => {
-    const res = await sendToBackground({
-      name: "auth",
-      body: { msg: "logout" }
-    })
-
-    if (res) {
-      openNoti("Logout success", "success")
-      setPage("login")
-    } else openNoti("Logout failed", "error")
-  }
 
   return (
     <Full>
       <Header />
-      {page == "login" && <LoginPopup Login={Login} />}
+      {page == "login" && <LoginPopup />}
       {page == "main" && !roomId && <MainPopup />}
       {page == "main" && roomId && <RoomPopup />}
-      {page == "setting" && <SettingPopup Logout={Logout} />}
+      {page == "setting" && <SettingPopup />}
       <Navbar />
     </Full>
   )

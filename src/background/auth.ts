@@ -1,5 +1,5 @@
 import { Storage } from "@plasmohq/storage"
-import { exitRoom } from "./room"
+import { exitRoom, getRoomId } from "./room"
 const storage = new Storage()
 
 export async function login(id: string, pw: string): Promise<string | null> {
@@ -12,6 +12,8 @@ export async function login(id: string, pw: string): Promise<string | null> {
   if (ret.status === 201) {
     const jwt = JSON.parse(await ret.text())["access_token"]
     await storage.set("jwt", jwt)
+    await storage.set("page", "main")
+    await getRoomId()
     return jwt
   }
   return null
@@ -20,6 +22,7 @@ export async function login(id: string, pw: string): Promise<string | null> {
 export async function logout(): Promise<boolean> {
   await exitRoom()
   await storage.set("jwt", false)
+  await storage.set("page", "login")
   return true
 }
 
