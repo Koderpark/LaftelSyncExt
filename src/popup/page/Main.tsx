@@ -1,14 +1,7 @@
 import { sendToBackground } from "@plasmohq/messaging"
 import { useState } from "react"
-import { Content, Full, Nav, Pill } from "~popup/component"
-import Navbar from "~popup/layout/nav"
-import Header from "~popup/layout/header"
-import {
-  Form,
-  PasswordField,
-  StringField,
-  SubmitBtn
-} from "~popup/component/form"
+import { Content, Full } from "~popup/component/layout"
+import { PasswordField, StringField, SubmitBtn } from "~popup/component/form"
 
 export default function MainPopup(props) {
   const { Logout } = props

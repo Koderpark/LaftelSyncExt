@@ -1,10 +1,10 @@
 import "../style.css"
 
-import { Full, Noti } from "~popup/component"
 import { useContext, useEffect, useState } from "react"
 import { sendToBackground } from "@plasmohq/messaging"
 import { useStorage } from "@plasmohq/storage/hook"
-import { NotiContext } from "~popup/component"
+import { Full } from "~popup/component/layout"
+import { NotiContext } from "~popup/component/noti"
 
 import LoginPopup from "~popup/page/Login"
 import MainPopup from "~popup/page/Main"
@@ -14,6 +14,7 @@ import SettingPopup from "~popup/page/Setting"
 import Header from "~popup/layout/header"
 import Navbar from "~popup/layout/nav"
 import { getRoomId } from "~background/room"
+import { Noti } from "./component/noti"
 
 export default function notiWrapper() {
   return (

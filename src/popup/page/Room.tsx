@@ -1,9 +1,9 @@
 import { useContext, useEffect } from "react"
-import { Content, Full, Nav, NotiContext, Pill } from "~popup/component"
+import { Pill } from "~popup/component/pill"
+import { Content, Full } from "~popup/component/layout"
 import { sendToBackground } from "@plasmohq/messaging"
 import { useStorage } from "@plasmohq/storage/hook"
-import Navbar from "~popup/layout/nav"
-import Header from "~popup/layout/header"
+import { NotiContext } from "~popup/component/noti"
 
 export default function RoomPopup(props) {
   const { Logout } = props
@@ -43,7 +43,7 @@ export default function RoomPopup(props) {
           <button onClick={() => exit()}>Exit</button>
         </Pill>
       </Content>
-      <Nav>
+      <div>
         <button onClick={() => openNoti("hello", "info")}>Open Noti</button>
         <button
           onClick={() =>
@@ -51,7 +51,7 @@ export default function RoomPopup(props) {
           }>
           parse video
         </button>
-      </Nav>
+      </div>
     </Full>
   )
 }

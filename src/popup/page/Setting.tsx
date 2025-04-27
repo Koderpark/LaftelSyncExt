@@ -1,9 +1,9 @@
 import { useContext, useEffect } from "react"
-import { Content, Full, NotiContext } from "~popup/component"
 import { sendToBackground } from "@plasmohq/messaging"
 import { useStorage } from "@plasmohq/storage/hook"
 import { PillBtn } from "~popup/component/pill"
-
+import { NotiContext } from "~popup/component/noti"
+import { Content, Full } from "~popup/component/layout"
 export default function SettingPopup(props) {
   const { Logout } = props
   const { openNoti } = useContext(NotiContext)

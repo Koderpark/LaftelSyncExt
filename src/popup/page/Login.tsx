@@ -1,38 +1,25 @@
 import { useState } from "react"
 
-import { Content } from "../component"
-import { useStorage } from "@plasmohq/storage/hook"
-import Header from "~popup/layout/header"
+import { Content } from "../component/layout"
+import { StringField, PasswordField, SubmitBtn } from "../component/form"
 
 export default function loginPopup(props) {
   const { Login } = props
   const [id, setId] = useState("")
   const [pw, setPw] = useState("")
 
+  const handleLogin = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    Login(id, pw)
+  }
+
   return (
     <div className="w-full h-full flex flex-col p-0">
       <Content>
-        <form className="w-full flex flex-col gap-4">
-          <input
-            className="w-full h-12 p-4"
-            type="text"
-            placeholder="Username"
-            onChange={(e) => setId(e.target.value)}
-          />
-          <input
-            className="w-full h-12 p-4"
-            type="password"
-            placeholder="Password"
-            onChange={(e) => setPw(e.target.value)}
-          />
-          <button
-            type="submit"
-            onClick={(e) => {
-              e.preventDefault()
-              Login(id, pw)
-            }}>
-            Login
-          </button>
+        <form className="w-full flex flex-col gap-2">
+          <StringField label="Username" value={id} setValue={setId} />
+          <PasswordField label="Password" value={pw} setValue={setPw} />
+          <SubmitBtn label="Login" onClick={handleLogin} />
         </form>
       </Content>
     </div>

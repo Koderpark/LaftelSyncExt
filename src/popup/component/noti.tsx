@@ -5,18 +5,18 @@ const NotiContext = createContext(null)
 type NotiType = "success" | "error" | "warning" | "info"
 
 const match = {
-  success: "bg-green-300",
-  error: "bg-red-300",
-  warning: "bg-yellow-300",
-  info: "bg-blue-300"
+  success: "bg-green-400",
+  error: "bg-red-400",
+  warning: "bg-yellow-400",
+  info: "bg-blue-400"
 }
 
 function NotiWrapper(props) {
   const { type, text } = props
   return (
-    <div className="fixed top-0 left-0 w-full flex items-center justify-center p-3">
-      <div className={`w-full rounded-xl shadow-lg ${match[type]} p-3`}>
-        <p className="text-lg">{text}</p>
+    <div className="fixed bottom-0 right-0 flex items-center justify-center p-3">
+      <div className={`w-full rounded-xl shadow-lg ${match[type]} px-6 py-3`}>
+        <p className="text-lg font-bold">{text}</p>
       </div>
     </div>
   )
