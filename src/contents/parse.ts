@@ -5,7 +5,7 @@ import { Storage } from "@plasmohq/storage"
 const storage = new Storage()
 
 export const config: PlasmoCSConfig = {
-  matches: ["https://laftel.net/**", "https://www.youtube.com/**"]
+  matches: ["https://laftel.net/**"]
 }
 
 export const parse = async () => {

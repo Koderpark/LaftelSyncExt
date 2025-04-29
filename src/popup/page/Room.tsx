@@ -16,10 +16,6 @@ export default function RoomPopup(props) {
     else openNoti("Exit failed", "error")
   }
 
-  useEffect(() => {
-    message("room/checkOwner")
-  }, [])
-
   return (
     <Full>
       <Content>

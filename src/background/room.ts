@@ -4,9 +4,16 @@ import { checkRoomOwner } from "./validate"
 
 const storage = new Storage()
 
-export async function getRoomId(): Promise<number | null> {
+/**
+ * 방 아이디 업데이트
+ * @returns 방 아이디 업데이트 성공 여부 (boolean)
+ */
+export async function getRoomId(): Promise<boolean> {
   const jwt = await storage.get("jwt")
-  if (!jwt) return null
+  if (!jwt) {
+    await storage.set("roomId", -1)
+    return false
+  }
 
   const ret = await fetch("http://localhost:3000/room/my", {
     method: "GET",
@@ -15,27 +22,28 @@ export async function getRoomId(): Promise<number | null> {
       Authorization: `Bearer ${jwt}`
     }
   })
-
-  if (ret.status === 200) {
-    const roomId = ret.json()["roomId"]
-    if (roomId !== -1) {
-      await storage.set("roomId", roomId)
-      return roomId
-    } else {
-      await storage.set("roomId", null)
-      return null
-    }
+  if (ret.status !== 200) {
+    await storage.set("roomId", -1)
+    return false
   }
-  return null
+
+  const roomId = ret.json()["roomId"]
+  await storage.set("roomId", roomId)
+  return true
 }
 
+/**
+ * 방 생성
+ * @param roomName 방 이름
+ * @param roomPW 방 비밀번호
+ * @returns 방 생성 성공 여부 (boolean)
+ */
 export async function createRoom(
   roomName: string,
   roomPW: string
-): Promise<void> {
-  console.log("createRoom", roomName)
+): Promise<boolean> {
   const jwt = await storage.get("jwt")
-  if (!jwt) return
+  if (!jwt) return false
 
   const ret = await fetch("http://localhost:3000/room", {
     method: "POST",
@@ -46,15 +54,18 @@ export async function createRoom(
     body: JSON.stringify({ roomName, password: roomPW })
   })
 
-  console.log("createRoom", ret)
+  if (ret.status !== 201) return false
 
-  if (ret.status === 201) {
-    const roomId = JSON.parse(await ret.text())["roomId"]
-    console.log("room created", roomId)
-    await storage.set("roomId", roomId)
-  }
+  const roomId = JSON.parse(await ret.text())["roomId"]
+  await storage.set("roomId", roomId)
+  await storage.set("isRoomOwner", true)
+  return true
 }
 
+/**
+ * 방 나가기
+ * @returns 방 나가기 성공 여부 (boolean)
+ */
 export async function exitRoom(): Promise<boolean> {
   const jwt = await storage.get("jwt")
   if (!jwt) return false
@@ -66,11 +77,21 @@ export async function exitRoom(): Promise<boolean> {
       Authorization: `Bearer ${jwt}`
     }
   })
-  await storage.set("roomId", null)
+
+  if (ret.status !== 201) return false
+
   await exitSocket()
-  return ret.status === 201
+  await storage.set("roomId", -1)
+  await storage.set("isRoomOwner", false)
+  return true
 }
 
+/**
+ * 방 참가
+ * @param roomId 방 아이디
+ * @param roomPW 방 비밀번호
+ * @returns 방 참가 성공 여부 (boolean)
+ */
 export async function joinRoom(
   roomId: number,
   roomPW?: string
@@ -87,15 +108,9 @@ export async function joinRoom(
     body: JSON.stringify({ roomId: roomId, password: roomPW })
   })
 
-  console.log("joinRoom", ret)
+  if (ret.status !== 201) return false
 
-  if (ret.status === 201) {
-    await storage.set("roomId", roomId)
-  }
-  return ret.status === 201
-}
-
-export async function checkOwner() {
-  await storage.set("isRoomOwner", await checkRoomOwner())
+  await storage.set("roomId", roomId)
+  await storage.set("isRoomOwner", false)
   return true
 }

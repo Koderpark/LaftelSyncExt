@@ -5,11 +5,18 @@ export type VideoData = {
   isPaused: boolean
 }
 
+/**
+ * 비디오 파싱
+ */
 export const parseVideo = async (): Promise<void> => {
   const tab = await chrome.tabs.query({ active: true, currentWindow: true })
   await chrome.tabs.sendMessage(tab[0].id, { msg: "parse" })
 }
 
+/**
+ * 비디오 업데이트
+ * @param data 비디오 데이터
+ */
 export const updateVideo = async (data: VideoData) => {
   const tab = await chrome.tabs.query({ active: true, currentWindow: true })
   const ret = await chrome.scripting.executeScript({

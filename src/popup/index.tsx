@@ -17,29 +17,23 @@ import { getRoomId } from "~background/room"
 import { Noti } from "./component/noti"
 import ChatPopup from "./page/Chat"
 
-export default function notiWrapper() {
-  return (
-    <Noti>
-      <div className="w-[320px] h-[480px] p-0">
-        <IndexPopup />
-      </div>
-    </Noti>
-  )
-}
-
-export function IndexPopup(props) {
+export default function Index() {
   const [page] = useStorage("page")
   const [roomId] = useStorage("roomId")
 
   return (
-    <Full>
-      <Header />
-      {page == "login" && <LoginPopup />}
-      {page == "main" && !roomId && <MainPopup />}
-      {page == "main" && roomId && <RoomPopup />}
-      {page == "setting" && <SettingPopup />}
-      {page == "chat" && <ChatPopup />}
-      <Navbar />
-    </Full>
+    <Noti>
+      <div className="w-[320px] h-[480px] p-0">
+        <Full>
+          <Header />
+          {page == "login" && <LoginPopup />}
+          {page == "main" && roomId == -1 && <MainPopup />}
+          {page == "main" && roomId != -1 && <RoomPopup />}
+          {page == "setting" && <SettingPopup />}
+          {page == "chat" && <ChatPopup />}
+          <Navbar />
+        </Full>
+      </div>
+    </Noti>
   )
 }

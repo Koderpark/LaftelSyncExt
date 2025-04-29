@@ -40,6 +40,7 @@
       "webRequest",
       "webRequestBlocking",
       "scripting"
-    ]
+    ],
+    "minimum_chrome_version": "116"
   }
 }

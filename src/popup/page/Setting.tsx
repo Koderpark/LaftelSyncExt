@@ -15,15 +15,8 @@ export default function SettingPopup(props) {
     if (res) openNoti("로그아웃 성공", "success")
   }
 
-  const checkOwner = async () => {
-    await sendToBackground({
-      name: "room",
-      body: { msg: "checkOwner" }
-    })
-  }
-
   useEffect(() => {
-    checkOwner()
+    message("room/checkOwner")
   }, [])
 
   return (

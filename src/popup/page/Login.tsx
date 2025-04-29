@@ -20,7 +20,7 @@ export default function loginPopup(props) {
 
   const handleSignup = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    setPage("signup")
+    // TODO: 회원가입 페이지로 이동
   }
 
   return (
