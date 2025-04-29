@@ -11,7 +11,7 @@ const storage = new Storage()
 export async function getRoomId(): Promise<boolean> {
   const jwt = await storage.get("jwt")
   if (!jwt) {
-    await storage.set("roomId", -1)
+    await storage.set("room", null)
     return false
   }
 
@@ -23,12 +23,12 @@ export async function getRoomId(): Promise<boolean> {
     }
   })
   if (ret.status !== 200) {
-    await storage.set("roomId", -1)
+    await storage.set("room", null)
     return false
   }
 
-  const roomId = ret.json()["roomId"]
-  await storage.set("roomId", roomId)
+  const room = await ret.json()
+  await storage.set("room", room)
   return true
 }
 
@@ -56,9 +56,8 @@ export async function createRoom(
 
   if (ret.status !== 201) return false
 
-  const roomId = JSON.parse(await ret.text())["roomId"]
-  await storage.set("roomId", roomId)
-  await storage.set("isRoomOwner", true)
+  const room = JSON.parse(await ret.text())
+  await storage.set("room", room)
   return true
 }
 
@@ -81,8 +80,7 @@ export async function exitRoom(): Promise<boolean> {
   if (ret.status !== 201) return false
 
   await exitSocket()
-  await storage.set("roomId", -1)
-  await storage.set("isRoomOwner", false)
+  await storage.set("room", null)
   return true
 }
 
@@ -110,7 +108,7 @@ export async function joinRoom(
 
   if (ret.status !== 201) return false
 
-  await storage.set("roomId", roomId)
-  await storage.set("isRoomOwner", false)
+  const room = JSON.parse(await ret.text())
+  await storage.set("room", room)
   return true
 }

@@ -5,7 +5,7 @@ import { Storage } from "@plasmohq/storage"
 const storage = new Storage()
 
 export const config: PlasmoCSConfig = {
-  matches: ["https://laftel.net/player/**"]
+  matches: ["https://laftel.net/player/*"]
 }
 
 export const parse = async () => {
@@ -26,19 +26,19 @@ export const parse = async () => {
 }
 
 const changeHandler = async () => {
-  const isRoomOwner = await storage.get("isRoomOwner")
-  if (!isRoomOwner) return
-
+  const room = JSON.parse(await storage.get("room"))
+  if (!room?.isOwner) return
   parse()
 }
 
 window.addEventListener("load", () => {
-  const vid = document.querySelector("video")
+  alert("loaded")
 
+  const vid = document.querySelector("video")
+  vid?.addEventListener("canplay", changeHandler)
   vid?.addEventListener("ratechange", changeHandler)
   vid?.addEventListener("pause", changeHandler)
   vid?.addEventListener("play", changeHandler)
-  vid?.addEventListener("canplay", changeHandler)
 })
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {

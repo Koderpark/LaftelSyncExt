@@ -19,7 +19,7 @@ import ChatPopup from "./page/Chat"
 
 export default function Index() {
   const [page] = useStorage("page")
-  const [roomId] = useStorage("roomId")
+  const [room] = useStorage("room")
 
   return (
     <Noti>
@@ -27,8 +27,8 @@ export default function Index() {
         <Full>
           <Header />
           {page == "login" && <LoginPopup />}
-          {page == "main" && roomId == -1 && <MainPopup />}
-          {page == "main" && roomId != -1 && <RoomPopup />}
+          {page == "main" && room == null && <MainPopup />}
+          {page == "main" && room != null && <RoomPopup />}
           {page == "setting" && <SettingPopup />}
           {page == "chat" && <ChatPopup />}
           <Navbar />
