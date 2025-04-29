@@ -24,9 +24,6 @@ export default function RoomPopup(props) {
         {!isRoomOwner && <h1>you are not owner of this room</h1>}
 
         <button onClick={() => openNoti("hello", "info")}>Open Noti</button>
-        <button onClick={() => sendToBackground({ name: "socket-test" })}>
-          Socket Test
-        </button>
         <Pill>
           <button onClick={() => exit()}>Exit</button>
         </Pill>

@@ -4,7 +4,7 @@ import { createContext, useState } from "react"
 const NotiContext = createContext(null)
 
 type NotiType = "success" | "error" | "warning" | "info"
-type MessageType = "auth" | "room" | "user" | "video" | "socket-test"
+type MessageType = "auth" | "room" | "user" | "video"
 
 const match = {
   success: "bg-green-400",

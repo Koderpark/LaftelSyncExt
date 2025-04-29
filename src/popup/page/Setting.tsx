@@ -15,10 +15,6 @@ export default function SettingPopup(props) {
     if (res) openNoti("로그아웃 성공", "success")
   }
 
-  useEffect(() => {
-    message("room/checkOwner")
-  }, [])
-
   return (
     <Full>
       <Content>
