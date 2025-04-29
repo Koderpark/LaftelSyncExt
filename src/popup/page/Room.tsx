@@ -19,9 +19,11 @@ export default function RoomPopup(props) {
   return (
     <Full>
       <Content>
-        <h1>Room {roomId}</h1>
-        {isRoomOwner && <h1>you are owner of this room</h1>}
-        {!isRoomOwner && <h1>you are not owner of this room</h1>}
+        <div className="flex flex-col gap-2 p-4 bg-gray-100 rounded-md text-gray-950">
+          <h1 className="font-bold text-2xl">Room {roomId}</h1>
+          {isRoomOwner && <h1>you are owner of this room</h1>}
+          {!isRoomOwner && <h1>you are not owner of this room</h1>}
+        </div>
 
         <button onClick={() => openNoti("hello", "info")}>Open Noti</button>
         <Pill>

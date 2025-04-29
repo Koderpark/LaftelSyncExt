@@ -6,7 +6,7 @@ export default function ChatPopup() {
   return (
     <Full>
       <Content>
-        <h1>this is chat page</h1>
+        <h1 className="font-bold text-2xl">TBD...</h1>
       </Content>
     </Full>
   )

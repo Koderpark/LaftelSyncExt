@@ -5,7 +5,7 @@ import { Storage } from "@plasmohq/storage"
 const storage = new Storage()
 
 export const config: PlasmoCSConfig = {
-  matches: ["https://laftel.net/**"]
+  matches: ["https://laftel.net/player/**"]
 }
 
 export const parse = async () => {
@@ -32,12 +32,14 @@ const changeHandler = async () => {
   parse()
 }
 
-const vid = document.querySelector("video")
+window.addEventListener("load", () => {
+  const vid = document.querySelector("video")
 
-vid?.addEventListener("ratechange", changeHandler)
-vid?.addEventListener("pause", changeHandler)
-vid?.addEventListener("play", changeHandler)
-vid?.addEventListener("canplay", changeHandler)
+  vid?.addEventListener("ratechange", changeHandler)
+  vid?.addEventListener("pause", changeHandler)
+  vid?.addEventListener("play", changeHandler)
+  vid?.addEventListener("canplay", changeHandler)
+})
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.msg == "parse") changeHandler()
