@@ -16,14 +16,6 @@ export default function RoomPopup(props) {
     else openNoti("Exit failed", "error")
   }
 
-  useEffect(() => {
-    async function fetchPeers() {
-      const res = await message("room/peers")
-      if (!res) openNoti("Fetch peers failed", "error")
-    }
-    fetchPeers()
-  }, [room])
-
   return (
     <Full>
       <Content>

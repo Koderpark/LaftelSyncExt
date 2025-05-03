@@ -13,29 +13,6 @@ type roomType = {
 }
 
 /**
- * 방 아이디 업데이트
- * @returns 방 아이디 업데이트 성공 여부 (boolean)
- */
-export async function getRoomId(): Promise<boolean> {
-  console.log("getRoomId")
-  const jwt = await storage.get("jwt")
-  if (!jwt) {
-    await storage.set("room", null)
-    return false
-  }
-
-  const ret = await authRequest("http://localhost:3000/room/my", "GET")
-  if (!ret) {
-    await storage.set("room", null)
-    return false
-  }
-
-  await storage.set("room", ret)
-  await shake()
-  return true
-}
-
-/**
  * 방 생성
  * @param roomName 방 이름
  * @param roomPW 방 비밀번호
@@ -49,16 +26,13 @@ export async function createRoom(
   const jwt = await storage.get("jwt")
   if (!jwt) return false
 
-  const ret = await authRequest("http://localhost:3000/room", "POST", {
+  const room = await authRequest("http://localhost:3000/room", "POST", {
     roomName,
     password: roomPW
   })
+  if (!room) return false
 
-  if (!ret) return false
-
-  const room = ret
-  await storage.set("room", room)
-  await shake()
+  await roomRenew()
   return true
 }
 
@@ -69,7 +43,7 @@ export async function createRoom(
 export async function exitRoom(): Promise<boolean> {
   console.log("exitRoom")
   await exitSocket()
-  await storage.set("room", null)
+  await clearRoom()
   return true
 }
 
@@ -93,26 +67,37 @@ export async function joinRoom(
   })
 
   if (!ret) return false
-  await storage.set("room", ret)
+  await roomRenew()
   await shake()
   return true
 }
 
-/**
- * 방 참가자 목록 조회
- * @returns 방 참가자 목록 조회 성공 여부 (boolean)
- */
-export async function roomPeers(): Promise<boolean> {
-  console.log("roomPeers")
-  const room: roomType = await storage.get("room")
-  if (!room) return false
+export async function roomRenew(): Promise<boolean> {
+  console.log("roomRenew")
 
-  const ret = await authRequest(
+  const room = await authRequest("http://localhost:3000/room/my", "GET")
+  if (!room) {
+    await clearRoom()
+    return false
+  }
+  const peers = await authRequest(
     `http://localhost:3000/room/${room.id}/peers`,
     "GET"
   )
-  if (!ret) return false
+  if (!peers) {
+    await clearRoom()
+    return false
+  }
 
-  await storage.set("peers", ret)
+  await storage.set("room", room)
+  await storage.set("peers", peers)
+  await shake()
+  return true
+}
+
+export async function clearRoom(): Promise<boolean> {
+  console.log("clearRoom")
+  await storage.set("room", null)
+  await storage.set("peers", null)
   return true
 }

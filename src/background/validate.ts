@@ -1,6 +1,6 @@
 import { Storage } from "@plasmohq/storage"
 import { logout } from "./auth"
-import { getRoomId } from "./room"
+import { roomRenew } from "./room"
 import { clientAlert } from "./index"
 import { authRequest } from "./auth"
 const storage = new Storage()
