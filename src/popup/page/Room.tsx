@@ -4,6 +4,8 @@ import { Content, Full } from "~popup/component/layout"
 import { sendToBackground } from "@plasmohq/messaging"
 import { useStorage } from "@plasmohq/storage/hook"
 import { NotiContext } from "~popup/component/noti"
+import { Btn } from "~popup/component/button"
+import { LuUser, LuCrown } from "react-icons/lu"
 
 export default function RoomPopup(props) {
   const { openNoti, message } = useContext(NotiContext)
@@ -19,33 +21,31 @@ export default function RoomPopup(props) {
   return (
     <Full>
       <Content>
-        <div className="flex flex-col gap-2 p-4 bg-gray-100 rounded-md text-gray-950">
-          <h1 className="font-bold text-2xl">
-            {room?.name}[{room?.id}]
-          </h1>
-          {room?.isOwner && <h1>you are owner of this room</h1>}
-          {!room?.isOwner && <h1>you are not owner of this room</h1>}
-        </div>
+        <div className="grow flex flex-col p-4 bg-gray-50 rounded-md text-gray-950 mb-4">
+          <p className="font-bold text-gray-950 text-2xl">{room?.name}</p>
+          <p className="text-sm text-gray-700">방 접속 ID : {room?.id}</p>
 
-        <button onClick={() => openNoti("hello", "info")}>Open Noti</button>
-        <Pill>
-          <button onClick={() => exit()}>Exit</button>
-        </Pill>
-        <div>
-          <button onClick={() => openNoti("hello", "info")}>Open Noti</button>
-          <button
-            onClick={() =>
-              sendToBackground({ name: "video", body: { msg: "parse" } })
-            }>
-            parse video
-          </button>
-        </div>
-        {peers?.map((peer) => (
-          <div key={peer.id}>
-            {peer.id} {peer.name} {peer.isOwner ? "owner" : "viewer"}
+          <hr className="my-2" />
+
+          <p className="font-bold text-gray-950 text-2xl mb-4">방 접속자</p>
+          <div className="flex flex-col gap-2">
+            {peers?.map((peer) => Peer(peer))}
           </div>
-        ))}
+        </div>
+        <Btn label="방 나가기" onClick={exit} type="option" />
       </Content>
     </Full>
+  )
+}
+
+function Peer(peer) {
+  return (
+    <div key={peer.id} className="flex flex-row gap-2">
+      <div className="w-5 h-5">
+        {peer.isOwner && <LuCrown className="w-full h-full" />}
+        {!peer.isOwner && <LuUser className="w-full h-full" />}
+      </div>
+      <p className="text-base text-gray-700">{peer.name}</p>
+    </div>
   )
 }

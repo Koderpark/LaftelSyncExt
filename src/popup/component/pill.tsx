@@ -9,21 +9,13 @@ export function Pill(props) {
 export function PillBtn(props) {
   const { children, onClick, isActive } = props
 
-  if (isActive) {
-    return (
-      <div
-        className="flex items-center justify-center rounded-full bg-blue-500 py-2 px-4 font-bold cursor-pointer shadow-md"
-        onClick={onClick}>
-        {children}
-      </div>
-    )
-  } else {
-    return (
-      <div
-        className="flex items-center justify-center rounded-full bg-gray-900 py-2 px-4 font-bold cursor-pointer shadow-md"
-        onClick={onClick}>
-        {children}
-      </div>
-    )
-  }
+  return (
+    <div
+      className={`flex items-center justify-center rounded-full ${
+        isActive ? "bg-blue-500" : "bg-gray-900"
+      } py-2 pe-4 ps-3 font-bold cursor-pointer shadow-md flex-row gap-1`}
+      onClick={onClick}>
+      {children}
+    </div>
+  )
 }
