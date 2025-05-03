@@ -1,9 +1,16 @@
 import { Storage } from "@plasmohq/storage"
-import { exitSocket } from "./socket"
+import { exitSocket, shake } from "./socket"
 import { checkRoomOwner } from "./validate"
 import { authRequest } from "./auth"
 
 const storage = new Storage()
+
+type roomType = {
+  id: number
+  cntViewer: number
+  isOwner: boolean
+  name: string
+}
 
 /**
  * 방 아이디 업데이트
@@ -24,6 +31,7 @@ export async function getRoomId(): Promise<boolean> {
   }
 
   await storage.set("room", ret)
+  await shake()
   return true
 }
 
@@ -37,6 +45,7 @@ export async function createRoom(
   roomName: string,
   roomPW: string
 ): Promise<boolean> {
+  console.log("createRoom")
   const jwt = await storage.get("jwt")
   if (!jwt) return false
 
@@ -49,6 +58,7 @@ export async function createRoom(
 
   const room = ret
   await storage.set("room", room)
+  await shake()
   return true
 }
 
@@ -57,6 +67,7 @@ export async function createRoom(
  * @returns 방 나가기 성공 여부 (boolean)
  */
 export async function exitRoom(): Promise<boolean> {
+  console.log("exitRoom")
   await exitSocket()
   await storage.set("room", null)
   return true
@@ -70,8 +81,9 @@ export async function exitRoom(): Promise<boolean> {
  */
 export async function joinRoom(
   roomId: number,
-  roomPW?: string
+  roomPW?: number
 ): Promise<boolean> {
+  console.log("joinRoom")
   const jwt = await storage.get("jwt")
   if (!jwt) return false
 
@@ -81,8 +93,26 @@ export async function joinRoom(
   })
 
   if (!ret) return false
+  await storage.set("room", ret)
+  await shake()
+  return true
+}
 
-  const room = JSON.parse(await ret.text())
-  await storage.set("room", room)
+/**
+ * 방 참가자 목록 조회
+ * @returns 방 참가자 목록 조회 성공 여부 (boolean)
+ */
+export async function roomPeers(): Promise<boolean> {
+  console.log("roomPeers")
+  const room: roomType = await storage.get("room")
+  if (!room) return false
+
+  const ret = await authRequest(
+    `http://localhost:3000/room/${room.id}/peers`,
+    "GET"
+  )
+  if (!ret) return false
+
+  await storage.set("peers", ret)
   return true
 }

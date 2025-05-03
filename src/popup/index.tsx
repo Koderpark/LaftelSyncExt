@@ -13,7 +13,6 @@ import SettingPopup from "~popup/page/Setting"
 
 import Header from "~popup/layout/header"
 import Navbar from "~popup/layout/nav"
-import { getRoomId } from "~background/room"
 import { Noti } from "./component/noti"
 import ChatPopup from "./page/Chat"
 

@@ -8,12 +8,21 @@ import { NotiContext } from "~popup/component/noti"
 export default function RoomPopup(props) {
   const { openNoti, message } = useContext(NotiContext)
   const [room] = useStorage("room")
+  const [peers] = useStorage("peers")
 
   const exit = async () => {
     const res = await message("room/exit")
     if (res) openNoti("Exit success", "success")
     else openNoti("Exit failed", "error")
   }
+
+  useEffect(() => {
+    async function fetchPeers() {
+      const res = await message("room/peers")
+      if (!res) openNoti("Fetch peers failed", "error")
+    }
+    fetchPeers()
+  }, [room])
 
   return (
     <Full>
@@ -39,6 +48,11 @@ export default function RoomPopup(props) {
             parse video
           </button>
         </div>
+        {peers?.map((peer) => (
+          <div key={peer.id}>
+            {peer.id} {peer.name} {peer.isOwner ? "owner" : "viewer"}
+          </div>
+        ))}
       </Content>
     </Full>
   )

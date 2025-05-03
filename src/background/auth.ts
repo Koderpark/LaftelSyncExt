@@ -9,6 +9,7 @@ const storage = new Storage()
  * @returns 로그인 성공 여부 (boolean)
  */
 export async function login(id: string, pw: string): Promise<boolean> {
+  console.log("login")
   const ret = await Request("http://localhost:3000/auth/login", "POST", {
     loginId: id,
     password: pw
@@ -27,6 +28,7 @@ export async function login(id: string, pw: string): Promise<boolean> {
  * @returns 로그아웃 성공 여부 (boolean)
  */
 export async function logout(): Promise<boolean> {
+  console.log("logout")
   await exitRoom()
   await storage.set("jwt", false)
   await storage.set("room", null)
@@ -80,6 +82,7 @@ export async function Request(
   method: "GET" | "POST" | "PUT" | "DELETE",
   body: any = {}
 ): Promise<any | null> {
+  console.log("Request")
   try {
     const ret = await fetch(url, {
       method,
