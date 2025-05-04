@@ -15,8 +15,6 @@ export async function login(id: string, pw: string): Promise<boolean> {
     password: pw
   })
 
-  if (!ret) return false
-
   await storage.set("jwt", ret.access_token)
   await storage.set("page", "main")
   await roomRenew()
@@ -50,7 +48,7 @@ export async function authRequest(
 ): Promise<any | null> {
   console.log("authRequest")
   const jwt = await storage.get("jwt")
-  if (!jwt) return errorHandler()
+  if (!jwt) return errorHandler(jwt)
 
   try {
     const ret = await fetch(url, {
@@ -64,10 +62,9 @@ export async function authRequest(
     })
 
     if (ret.ok) return await ret.json()
-    else return errorHandler()
+    else return errorHandler(ret)
   } catch (e) {
-    console.log(e)
-    return errorHandler()
+    return errorHandler(e)
   }
 }
 
@@ -95,13 +92,14 @@ export async function Request(
     })
 
     if (ret.ok) return await ret.json()
-    else return errorHandler()
+    else return errorHandler(ret)
   } catch (e) {
-    return errorHandler()
+    return errorHandler(e)
   }
 }
 
-export async function errorHandler(): Promise<null> {
+export async function errorHandler(e: any): Promise<null> {
+  console.error(e)
   await logout()
   return null
 }

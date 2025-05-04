@@ -1,6 +1,5 @@
 import { Storage } from "@plasmohq/storage"
 import { exitSocket, shake } from "./socket"
-import { checkRoomOwner } from "./validate"
 import { authRequest } from "./auth"
 
 const storage = new Storage()
@@ -23,16 +22,13 @@ export async function createRoom(
   roomPW: string
 ): Promise<boolean> {
   console.log("createRoom")
-  const jwt = await storage.get("jwt")
-  if (!jwt) return false
-
-  const room = await authRequest("http://localhost:3000/room", "POST", {
+  await authRequest("http://localhost:3000/room", "POST", {
     roomName,
     password: roomPW
   })
-  if (!room) return false
 
   await roomRenew()
+  await shake()
   return true
 }
 
@@ -43,7 +39,8 @@ export async function createRoom(
 export async function exitRoom(): Promise<boolean> {
   console.log("exitRoom")
   await exitSocket()
-  await clearRoom()
+  await storage.set("room", null)
+  await storage.set("peers", null)
   return true
 }
 
@@ -58,15 +55,11 @@ export async function joinRoom(
   roomPW?: number
 ): Promise<boolean> {
   console.log("joinRoom")
-  const jwt = await storage.get("jwt")
-  if (!jwt) return false
-
   const ret = await authRequest("http://localhost:3000/room/join", "POST", {
     roomId: roomId,
     password: roomPW
   })
 
-  if (!ret) return false
   await roomRenew()
   await shake()
   return true
@@ -74,30 +67,11 @@ export async function joinRoom(
 
 export async function roomRenew(): Promise<boolean> {
   console.log("roomRenew")
-
   const room = await authRequest("http://localhost:3000/room/my", "GET")
-  if (!room) {
-    await clearRoom()
-    return false
-  }
-  const peers = await authRequest(
-    `http://localhost:3000/room/${room.id}/peers`,
-    "GET"
-  )
-  if (!peers) {
-    await clearRoom()
-    return false
-  }
+  const peers = await authRequest(`http://localhost:3000/room/peers`, "GET")
 
   await storage.set("room", room)
   await storage.set("peers", peers)
-  await shake()
-  return true
-}
-
-export async function clearRoom(): Promise<boolean> {
-  console.log("clearRoom")
-  await storage.set("room", null)
-  await storage.set("peers", null)
+  if (room) await shake()
   return true
 }

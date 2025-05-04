@@ -6,6 +6,7 @@ import { useStorage } from "@plasmohq/storage/hook"
 import { NotiContext } from "~popup/component/noti"
 import { Btn } from "~popup/component/button"
 import { LuUser, LuCrown } from "react-icons/lu"
+import { Label } from "~popup/component/label"
 
 export default function RoomPopup(props) {
   const { openNoti, message } = useContext(NotiContext)
@@ -29,7 +30,7 @@ export default function RoomPopup(props) {
 
           <p className="font-bold text-gray-950 text-2xl mb-4">방 접속자</p>
           <div className="flex flex-col gap-2">
-            {peers?.map((peer) => Peer(peer))}
+            {peers && peers.map((peer) => Peer(peer))}
           </div>
         </div>
         <Btn label="방 나가기" onClick={exit} type="option" />
@@ -46,6 +47,7 @@ function Peer(peer) {
         {!peer.isOwner && <LuUser className="w-full h-full" />}
       </div>
       <p className="text-base text-gray-700">{peer.name}</p>
+      {peer.isMe && <Label>me</Label>}
     </div>
   )
 }

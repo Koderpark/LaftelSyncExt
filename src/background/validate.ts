@@ -10,26 +10,6 @@ export async function checkJWT(): Promise<boolean> {
   return ret
 }
 
-export async function checkRoom(): Promise<boolean> {
-  const jwt = await storage.get("jwt")
-  const roomId = await storage.get("roomId")
-  if (!jwt || !roomId) return false
-
-  const ret = await authRequest("http://localhost:3000/room/my", "GET")
-  return ret && ret.roomId === roomId
-}
-
-export async function checkRoomOwner(): Promise<boolean> {
-  const jwt = await storage.get("jwt")
-  const roomId = await storage.get("roomId")
-  if (!jwt || !roomId) return false
-
-  const room = await authRequest(`http://localhost:3000/room/${roomId}`, "GET")
-  const user = await authRequest("http://localhost:3000/user/read", "GET")
-
-  return room && user && room.ownerId === user.userId
-}
-
 // storage.watch({
 //   jwt: () => {
 //     if (!checkJWT()) logout()
