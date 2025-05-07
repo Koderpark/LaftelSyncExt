@@ -4,11 +4,21 @@ import { authRequest } from "./auth"
 
 const storage = new Storage()
 
-type roomType = {
+export type roomType = {
   id: number
+  ownerId: number
   cntViewer: number
-  isOwner: boolean
   name: string
+  vidName: string
+  vidUrl: string
+  vidEpisode: number
+}
+
+export type peerType = {
+  id: number
+  name: string
+  isOwner: boolean
+  isMe: boolean
 }
 
 /**
@@ -17,18 +27,15 @@ type roomType = {
  * @param roomPW 방 비밀번호
  * @returns 방 생성 성공 여부 (boolean)
  */
-export async function createRoom(
-  roomName: string,
-  roomPW: string
-): Promise<boolean> {
+export async function createRoom(name: string, password: string): Promise<boolean> {
   console.log("createRoom")
-  await authRequest("http://localhost:3000/room", "POST", {
-    roomName,
-    password: roomPW
+  const room = await authRequest("http://localhost:3000/room", "POST", {
+    name,
+    password
   })
+  const peers = await authRequest(`http://localhost:3000/room/peers`, "GET")
 
-  await roomRenew()
-  await shake()
+  await roomUpdate(room, peers)
   return true
 }
 
@@ -38,6 +45,7 @@ export async function createRoom(
  */
 export async function exitRoom(): Promise<boolean> {
   console.log("exitRoom")
+  await shake()
   await exitSocket()
   await storage.set("room", null)
   await storage.set("peers", null)
@@ -51,27 +59,33 @@ export async function exitRoom(): Promise<boolean> {
  * @returns 방 참가 성공 여부 (boolean)
  */
 export async function joinRoom(
-  roomId: number,
-  roomPW?: number
+  id: number,
+  password?: number
 ): Promise<boolean> {
   console.log("joinRoom")
-  const ret = await authRequest("http://localhost:3000/room/join", "POST", {
-    roomId: roomId,
-    password: roomPW
+  const room = await authRequest("http://localhost:3000/room/join", "POST", {
+    id,
+    password
   })
+  const peers = await authRequest(`http://localhost:3000/room/peers`, "GET")
 
-  await roomRenew()
-  await shake()
+  await roomUpdate(room, peers)
   return true
 }
 
 export async function roomRenew(): Promise<boolean> {
-  console.log("roomRenew")
   const room = await authRequest("http://localhost:3000/room/my", "GET")
   const peers = await authRequest(`http://localhost:3000/room/peers`, "GET")
+  return await roomUpdate(room, peers)
+}
 
+export async function roomUpdate(
+  room: roomType,
+  peers: peerType[]
+): Promise<boolean> {
   await storage.set("room", room)
   await storage.set("peers", peers)
   if (room) await shake()
+  else await exitSocket()
   return true
 }

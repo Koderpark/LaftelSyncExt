@@ -8,7 +8,7 @@ export const config: PlasmoCSConfig = {
   matches: ["https://laftel.net/player/*"]
 }
 
-export const parse = async () => {
+export const parseVideo = async () => {
   const video = document.querySelector("video")
   if (!video) return
 
@@ -25,10 +25,21 @@ export const parse = async () => {
   return { url, speed, time, isPaused }
 }
 
+// export const parseMetadata = async () => {
+//   const title = document.querySelector("h1.title")
+//   if (!title) return
+
+//   const titleText = title.textContent
+//   const res = await sendToBackground({
+//     name: "metadata",
+//     body: { msg: "update", data: { title: titleText } }
+//   })
+// }
+
 const changeHandler = async () => {
   const room = JSON.parse(await storage.get("room"))
   if (!room?.isOwner) return
-  parse()
+  parseVideo()
 }
 
 window.addEventListener("load", () => {

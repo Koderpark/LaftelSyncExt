@@ -1,5 +1,5 @@
 import { Storage } from "@plasmohq/storage"
-import { exitRoom, roomRenew } from "./room"
+import { exitRoom, roomRenew, roomUpdate } from "./room"
 const storage = new Storage()
 
 /**
