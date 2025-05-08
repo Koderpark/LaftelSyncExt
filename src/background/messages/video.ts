@@ -15,6 +15,7 @@ const parseHandler: PlasmoMessaging.MessageHandler = async (req, res) => {
 }
 
 const updateHandler: PlasmoMessaging.MessageHandler = async (req, res) => {
+  console.log("updatevid")
   send("updateVid", req.body.data)
 }
 
