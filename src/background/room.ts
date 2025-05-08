@@ -1,100 +1,94 @@
 import { Storage } from "@plasmohq/storage"
-import { exitSocket } from "./socket"
-import { checkRoomOwner } from "./validate"
+import { exitSocket, shake } from "./socket"
+import { authRequest } from "./auth"
 
 const storage = new Storage()
 
-export async function getRoomId(): Promise<number | null> {
-  const jwt = await storage.get("jwt")
-  if (!jwt) return null
-
-  const ret = await fetch("http://localhost:3000/room/my", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${jwt}`
-    }
-  })
-
-  if (ret.status === 200) {
-    const roomId = ret.json()["roomId"]
-    if (roomId !== -1) {
-      await storage.set("roomId", roomId)
-      return roomId
-    } else {
-      await storage.set("roomId", null)
-      return null
-    }
-  }
-  return null
+export type roomType = {
+  id: number
+  ownerId: number
+  cntViewer: number
+  name: string
+  vidName: string
+  vidUrl: string
+  vidEpisode: number
 }
 
+export type peerType = {
+  id: number
+  name: string
+  isOwner: boolean
+  isMe: boolean
+}
+
+/**
+ * 방 생성
+ * @param roomName 방 이름
+ * @param roomPW 방 비밀번호
+ * @returns 방 생성 성공 여부 (boolean)
+ */
 export async function createRoom(
-  roomName: string,
-  roomPW: string
-): Promise<void> {
-  console.log("createRoom", roomName)
-  const jwt = await storage.get("jwt")
-  if (!jwt) return
-
-  const ret = await fetch("http://localhost:3000/room", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${jwt}`
-    },
-    body: JSON.stringify({ roomName, password: roomPW })
-  })
-
-  console.log("createRoom", ret)
-
-  if (ret.status === 201) {
-    const roomId = JSON.parse(await ret.text())["roomId"]
-    console.log("room created", roomId)
-    await storage.set("roomId", roomId)
-  }
-}
-
-export async function exitRoom(): Promise<boolean> {
-  const jwt = await storage.get("jwt")
-  if (!jwt) return false
-
-  const ret = await fetch("http://localhost:3000/room/exit", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${jwt}`
-    }
-  })
-  await storage.set("roomId", null)
-  await exitSocket()
-  return ret.status === 201
-}
-
-export async function joinRoom(
-  roomId: number,
-  roomPW?: string
+  name: string,
+  password: string
 ): Promise<boolean> {
-  const jwt = await storage.get("jwt")
-  if (!jwt) return false
-
-  const ret = await fetch("http://localhost:3000/room/join", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${jwt}`
-    },
-    body: JSON.stringify({ roomId: roomId, password: roomPW })
+  console.log("createRoom")
+  const room = await authRequest("http://localhost:3000/party", "POST", {
+    name,
+    password
   })
+  const peers = await authRequest(`http://localhost:3000/party/peers`, "GET")
 
-  console.log("joinRoom", ret)
-
-  if (ret.status === 201) {
-    await storage.set("roomId", roomId)
-  }
-  return ret.status === 201
+  await roomUpdate(room, peers)
+  return true
 }
 
-export async function checkOwner() {
-  await storage.set("isRoomOwner", await checkRoomOwner())
+/**
+ * 방 나가기
+ * @returns 방 나가기 성공 여부 (boolean)
+ */
+export async function exitRoom(): Promise<boolean> {
+  console.log("exitRoom")
+  await shake()
+  await exitSocket()
+  await storage.set("room", null)
+  await storage.set("peers", null)
+  return true
+}
+
+/**
+ * 방 참가
+ * @param roomId 방 아이디
+ * @param roomPW 방 비밀번호
+ * @returns 방 참가 성공 여부 (boolean)
+ */
+export async function joinRoom(
+  id: number,
+  password?: number
+): Promise<boolean> {
+  console.log("joinRoom")
+  const room = await authRequest("http://localhost:3000/party/join", "POST", {
+    id,
+    password
+  })
+  const peers = await authRequest(`http://localhost:3000/party/peers`, "GET")
+
+  await roomUpdate(room, peers)
+  return true
+}
+
+export async function roomRenew(): Promise<boolean> {
+  const room = await authRequest("http://localhost:3000/room/my", "GET")
+  const peers = await authRequest(`http://localhost:3000/party/peers`, "GET")
+  return await roomUpdate(room, peers)
+}
+
+export async function roomUpdate(
+  room: roomType,
+  peers: peerType[]
+): Promise<boolean> {
+  await storage.set("room", room)
+  await storage.set("peers", peers)
+  if (room) await shake()
+  else await exitSocket()
+  return true
 }

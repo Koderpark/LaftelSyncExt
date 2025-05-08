@@ -15,6 +15,7 @@
     "plasmo": "0.90.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-icons": "^5.5.0",
     "socket.io-client": "^4.8.1"
   },
   "devDependencies": {
@@ -40,6 +41,7 @@
       "webRequest",
       "webRequestBlocking",
       "scripting"
-    ]
+    ],
+    "minimum_chrome_version": "116"
   }
 }

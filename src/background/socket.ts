@@ -2,6 +2,7 @@ import io from "socket.io-client"
 import { Storage } from "@plasmohq/storage"
 import { updateVideo, type VideoData } from "./video"
 import { clientAlert } from "./index"
+import { roomUpdate, type roomType, type peerType, roomRenew } from "./room"
 const storage = new Storage()
 const socket = io("http://localhost:8081/", {
   transports: ["websocket"],
@@ -40,4 +41,9 @@ socket.on("connect", async () => {})
 socket.on("updateVid", (data: VideoData) => {
   clientAlert("get socket")
   updateVideo(data)
+})
+
+socket.on("roomUpdate", async () => {
+  console.log("roomUpdate")
+  await roomRenew()
 })

@@ -2,6 +2,7 @@ import { parseVideo } from "~background/video"
 import type { PlasmoMessaging } from "@plasmohq/messaging"
 import { send } from "~background/socket"
 import { clientAlert } from "~background/index"
+
 const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
   const { msg } = req.body
 
