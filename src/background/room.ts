@@ -27,13 +27,16 @@ export type peerType = {
  * @param roomPW 방 비밀번호
  * @returns 방 생성 성공 여부 (boolean)
  */
-export async function createRoom(name: string, password: string): Promise<boolean> {
+export async function createRoom(
+  name: string,
+  password: string
+): Promise<boolean> {
   console.log("createRoom")
-  const room = await authRequest("http://localhost:3000/room", "POST", {
+  const room = await authRequest("http://localhost:3000/party", "POST", {
     name,
     password
   })
-  const peers = await authRequest(`http://localhost:3000/room/peers`, "GET")
+  const peers = await authRequest(`http://localhost:3000/party/peers`, "GET")
 
   await roomUpdate(room, peers)
   return true
@@ -63,11 +66,11 @@ export async function joinRoom(
   password?: number
 ): Promise<boolean> {
   console.log("joinRoom")
-  const room = await authRequest("http://localhost:3000/room/join", "POST", {
+  const room = await authRequest("http://localhost:3000/party/join", "POST", {
     id,
     password
   })
-  const peers = await authRequest(`http://localhost:3000/room/peers`, "GET")
+  const peers = await authRequest(`http://localhost:3000/party/peers`, "GET")
 
   await roomUpdate(room, peers)
   return true
@@ -75,7 +78,7 @@ export async function joinRoom(
 
 export async function roomRenew(): Promise<boolean> {
   const room = await authRequest("http://localhost:3000/room/my", "GET")
-  const peers = await authRequest(`http://localhost:3000/room/peers`, "GET")
+  const peers = await authRequest(`http://localhost:3000/party/peers`, "GET")
   return await roomUpdate(room, peers)
 }
 
