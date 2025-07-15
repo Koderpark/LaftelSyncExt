@@ -44,11 +44,6 @@ function Noti(props) {
       name: name,
       body: { msg: msg, ...content }
     })
-
-    if (!ret) {
-      openNoti(`Error ${to}`, "error") // todo: 에러메시지 구체화
-      return null
-    }
     return ret
   }
 

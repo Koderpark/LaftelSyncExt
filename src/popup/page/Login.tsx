@@ -20,7 +20,7 @@ export default function loginPopup(props) {
 
   const handleSignup = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    await message("page/newTab", { url: "https://laftel.net" }) // TODO: 회원가입 페이지로 이동
+    await message("page/newTab", { url: "https://laftel.net" }) // TODO: 더미페이지 교체
   }
 
   return (

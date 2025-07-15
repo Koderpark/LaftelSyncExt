@@ -11,7 +11,7 @@ import { Label } from "~popup/component/label"
 export default function RoomPopup(props) {
   const { openNoti, message } = useContext(NotiContext)
   const [room] = useStorage("room")
-  const [peers] = useStorage("peers")
+  const peers = room?.peers
 
   const exit = async () => {
     const res = await message("room/exit")
@@ -34,6 +34,13 @@ export default function RoomPopup(props) {
           </div>
         </div>
         <Btn label="방 나가기" onClick={exit} type="option" />
+        <Btn
+          label="디버그"
+          onClick={() => {
+            message("video/parse")
+          }}
+          type="option"
+        />
       </Content>
     </Full>
   )
