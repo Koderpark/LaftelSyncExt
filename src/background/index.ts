@@ -2,6 +2,7 @@ import * as room from "./room"
 import * as validate from "./validate"
 import * as auth from "./auth"
 import * as socket from "./socket"
+import * as page from "./service/page"
 
 export async function clientAlert(msg: string) {
   const currtab = await chrome.tabs.query({ active: true, currentWindow: true })
@@ -14,4 +15,4 @@ export async function clientAlert(msg: string) {
   })
 }
 
-export { room, validate, auth, socket }
+export { room, validate, auth, socket, page }

@@ -1,25 +1,9 @@
 import { Storage } from "@plasmohq/storage"
 import { exitSocket, shake } from "./socket"
 import { authRequest } from "./auth"
+import type { roomType } from "./type"
 
 const storage = new Storage()
-
-export type roomType = {
-  id: number
-  ownerId: number
-  cntViewer: number
-  name: string
-  vidName: string
-  vidUrl: string
-  vidEpisode: number
-}
-
-export type peerType = {
-  id: number
-  name: string
-  isOwner: boolean
-  isMe: boolean
-}
 
 /**
  * 방 생성
@@ -32,13 +16,13 @@ export async function createRoom(
   password: string
 ): Promise<boolean> {
   console.log("createRoom")
-  const room = await authRequest("http://localhost:3000/party", "POST", {
+  await authRequest("http://localhost:3000/party/create", "POST", {
     name,
     password
   })
-  const peers = await authRequest(`http://localhost:3000/party/peers`, "GET")
+  const room = await authRequest(`http://localhost:3000/room/status`, "GET")
 
-  await roomUpdate(room, peers)
+  await roomUpdate(room)
   return true
 }
 
@@ -66,28 +50,23 @@ export async function joinRoom(
   password?: number
 ): Promise<boolean> {
   console.log("joinRoom")
-  const room = await authRequest("http://localhost:3000/party/join", "POST", {
+  await authRequest("http://localhost:3000/party/join", "POST", {
     id,
     password
   })
-  const peers = await authRequest(`http://localhost:3000/party/peers`, "GET")
 
-  await roomUpdate(room, peers)
+  const room = await authRequest(`http://localhost:3000/room/status`, "GET")
+  await roomUpdate(room)
   return true
 }
 
 export async function roomRenew(): Promise<boolean> {
   const room = await authRequest("http://localhost:3000/room/my", "GET")
-  const peers = await authRequest(`http://localhost:3000/party/peers`, "GET")
-  return await roomUpdate(room, peers)
+  return await roomUpdate(room)
 }
 
-export async function roomUpdate(
-  room: roomType,
-  peers: peerType[]
-): Promise<boolean> {
+export async function roomUpdate(room: roomType): Promise<boolean> {
   await storage.set("room", room)
-  await storage.set("peers", peers)
   if (room) await shake()
   else await exitSocket()
   return true

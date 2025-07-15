@@ -2,8 +2,10 @@ import io from "socket.io-client"
 import { Storage } from "@plasmohq/storage"
 import { updateVideo, type VideoData } from "./video"
 import { clientAlert } from "./index"
-import { roomUpdate, type roomType, type peerType, roomRenew } from "./room"
+import { roomUpdate } from "./room"
+import type { roomType } from "./type"
 const storage = new Storage()
+
 const socket = io("http://localhost:8081/", {
   transports: ["websocket"],
   reconnection: false,
@@ -38,12 +40,11 @@ export const sendRes = async (event: string, data: any) => {
 
 socket.on("connect", async () => {})
 
-socket.on("updateVid", (data: VideoData) => {
-  clientAlert("get socket")
-  updateVideo(data)
+socket.on("roomUpdate", async (body: roomType) => {
+  console.log("roomUpdate")
+  await roomUpdate(body)
 })
 
-socket.on("roomUpdate", async () => {
-  console.log("roomUpdate")
-  await roomRenew()
+socket.on("video", (data: VideoData) => {
+  updateVideo(data)
 })
