@@ -6,7 +6,6 @@ import { useStorage } from "@plasmohq/storage/hook"
 import { Full } from "~popup/component/layout"
 import { NotiContext } from "~popup/component/noti"
 
-import LoginPopup from "~popup/page/Login"
 import MainPopup from "~popup/page/Main"
 import RoomPopup from "~popup/page/Room"
 import SettingPopup from "~popup/page/Setting"
@@ -25,7 +24,6 @@ export default function Index() {
       <div className="w-[320px] h-[480px] p-0">
         <Full>
           <Header />
-          {page == "login" && <LoginPopup />}
           {page == "main" && room == null && <MainPopup />}
           {page == "main" && room != null && <RoomPopup />}
           {page == "setting" && <SettingPopup />}

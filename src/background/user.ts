@@ -1,5 +1,5 @@
 import { Storage } from "@plasmohq/storage"
-import { authRequest } from "./auth"
+import { Request } from "./auth"
 const storage = new Storage()
 
 /**
@@ -7,6 +7,6 @@ const storage = new Storage()
  * @returns 유저 아이디 (not currently using)
  */
 export const userInfo = async (): Promise<string> => {
-  const res = await authRequest("http://localhost:3000/user/read", "GET")
+  const res = await Request("http://localhost:3000/user/read", "GET")
   return res["loginId"]
 }

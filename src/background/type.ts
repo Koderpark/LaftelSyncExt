@@ -24,3 +24,9 @@ export interface User {
   room?: Room
   host?: Room
 }
+
+export interface Log {
+  type: "success" | "error"
+  message: string
+  time: Date
+}

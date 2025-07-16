@@ -35,6 +35,11 @@ export default function SettingPopup(props) {
     message("page/newTab", { url: "#" }) // TODO: 계정 설정 페이지 추가
   }
 
+  const logTest = async () => {
+    const res = await message("log/test", { msg: "hello world" })
+    console.log(res)
+  }
+
   return (
     <Full>
       <Content>
@@ -59,6 +64,7 @@ export default function SettingPopup(props) {
               type="option"
             />
           </div>
+          <Btn label="Log Test" onClick={logTest} />
         </div>
       </Content>
     </Full>

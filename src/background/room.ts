@@ -1,6 +1,5 @@
 import { Storage } from "@plasmohq/storage"
-import { exitSocket, shake } from "./service/socket"
-import { authRequest } from "./auth"
+import { Request } from "./auth"
 import type { Room } from "./type"
 
 const storage = new Storage()
@@ -16,11 +15,11 @@ export async function createRoom(
   password: string
 ): Promise<boolean> {
   console.log("createRoom")
-  await authRequest("http://localhost:3000/party/create", "POST", {
+  await Request("http://localhost:3000/party/create", "POST", {
     name,
     password
   })
-  const room = await authRequest(`http://localhost:3000/room/status`, "GET")
+  const room = await Request(`http://localhost:3000/room/status`, "GET")
 
   await roomUpdate(room)
   return true
@@ -32,8 +31,6 @@ export async function createRoom(
  */
 export async function exitRoom(): Promise<boolean> {
   console.log("exitRoom")
-  await shake()
-  await exitSocket()
   await storage.set("room", null)
   await storage.set("peers", null)
   return true
@@ -50,24 +47,22 @@ export async function joinRoom(
   password?: number
 ): Promise<boolean> {
   console.log("joinRoom")
-  await authRequest("http://localhost:3000/party/join", "POST", {
+  await Request("http://localhost:3000/party/join", "POST", {
     id,
     password
   })
 
-  const room = await authRequest(`http://localhost:3000/room/status`, "GET")
+  const room = await Request(`http://localhost:3000/room/status`, "GET")
   await roomUpdate(room)
   return true
 }
 
 export async function roomRenew(): Promise<boolean> {
-  const room = await authRequest("http://localhost:3000/room/my", "GET")
+  const room = await Request("http://localhost:3000/room/my", "GET")
   return await roomUpdate(room)
 }
 
-export async function roomUpdate(room: roomType): Promise<boolean> {
+export async function roomUpdate(room: Room): Promise<boolean> {
   await storage.set("room", room)
-  if (room) await shake()
-  else await exitSocket()
   return true
 }

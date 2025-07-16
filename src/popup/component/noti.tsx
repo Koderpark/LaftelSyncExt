@@ -1,10 +1,10 @@
-import { sendToBackground } from "@plasmohq/messaging"
+import { sendToBackground, type MessagesMetadata } from "@plasmohq/messaging"
 import { createContext, useState } from "react"
 
 const NotiContext = createContext(null)
 
 type NotiType = "success" | "error" | "warning" | "info"
-type MessageType = "auth" | "room" | "user" | "video"
+type MessageType = "room" | "user" | "video" | "log" | "page"
 
 const match = {
   success: "bg-green-400",
@@ -39,7 +39,6 @@ function Noti(props) {
   const message = async (to: string, content: any = {}) => {
     const name: MessageType = to.split("/")[0] as MessageType
     const msg: string = to.split("/")[1]
-
     const ret = await sendToBackground({
       name: name,
       body: { msg: msg, ...content }
