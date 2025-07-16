@@ -1,7 +1,7 @@
 import { Storage } from "@plasmohq/storage"
-import { exitSocket, shake } from "./socket"
+import { exitSocket, shake } from "./service/socket"
 import { authRequest } from "./auth"
-import type { roomType } from "./type"
+import type { Room } from "./type"
 
 const storage = new Storage()
 

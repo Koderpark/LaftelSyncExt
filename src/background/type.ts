@@ -1,26 +1,26 @@
-export type roomType = {
+export interface Room {
   id: number
   updatedAt: Date
   name: string
   password?: string
   vidTitle: string
   vidEpisode: string
-  vidData: vidDataType
-  owner: userType
-  users: userType[]
+  vidData: VidData
+  owner: User
+  users: User[]
 }
 
-export type vidDataType = {
+export interface VidData {
   url: string
   speed: number
   time: number
   isPaused: boolean
 }
 
-export type userType = {
+export interface User {
   id: number
   createdAt: Date
   name: string
-  room?: roomType
-  host?: roomType
+  room?: Room
+  host?: Room
 }
