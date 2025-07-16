@@ -8,8 +8,9 @@ const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
 }
 
 const testHandler: PlasmoMessaging.MessageHandler = async (req, res) => {
-  const { msg } = req.body
-  await DisplayLog(msg)
+  const { text } = req.body
+  await DisplayLog(text)
+  res.send({ status: "ok" })
 }
 
 export default handler

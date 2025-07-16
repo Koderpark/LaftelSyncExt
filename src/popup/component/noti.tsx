@@ -1,5 +1,6 @@
 import { sendToBackground, type MessagesMetadata } from "@plasmohq/messaging"
-import { createContext, useState } from "react"
+import { createContext, useEffect, useState } from "react"
+import { useStorage } from "@plasmohq/storage/hook"
 
 const NotiContext = createContext(null)
 
@@ -28,6 +29,7 @@ function Noti(props) {
   const [isOpen, setIsOpen] = useState<Boolean>(false)
   const [text, setText] = useState<string>("")
   const [type, setType] = useState<NotiType>("info")
+  const [log] = useStorage("log")
 
   const openNoti = async (text: string, type: NotiType) => {
     setText(text)
@@ -46,9 +48,20 @@ function Noti(props) {
     return ret
   }
 
+  useEffect(() => {
+    if (log) {
+      for (const item of log) {
+        openNoti(item.message, item.type)
+      }
+    }
+  }, [log])
+
   return (
     <NotiContext.Provider value={{ openNoti, message }}>
-      {isOpen && <NotiWrapper type={type} text={text} />}
+      {log &&
+        log.map((v, i) => (
+          <NotiWrapper key={i} type={v.type} text={v.message} />
+        ))}
       {props.children}
     </NotiContext.Provider>
   )

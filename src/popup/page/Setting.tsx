@@ -36,7 +36,7 @@ export default function SettingPopup(props) {
   }
 
   const logTest = async () => {
-    const res = await message("log/test", { msg: "hello world" })
+    const res = await message("log/test", { text: "hello world" })
     console.log(res)
   }
 
