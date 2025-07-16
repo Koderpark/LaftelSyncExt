@@ -1,5 +1,9 @@
 import io, { Socket } from "socket.io-client"
-import { connectHandler, roomUpdateHandler, videoHandler } from "./handler"
+import {
+  connectHandler,
+  roomUpdateHandler,
+  videoHandler
+} from "./socket-handler"
 
 export const socketModule = (() => {
   let instance: Socket | null = null

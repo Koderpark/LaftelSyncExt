@@ -7,15 +7,19 @@ export const logModule = (() => {
     return (await storage.get("log")) || []
   }
 
+  const set = async (input: Log[]) => {
+    await storage.set("log", input)
+  }
+
   const push = async (input: Log) => {
     const list = await get()
     list.push(input)
-    await storage.set("log", list)
+    await set(list)
 
     setTimeout(async () => {
       const list = await get()
       list.shift()
-      await storage.set("log", list)
+      await set(list)
     }, 2500)
   }
 

@@ -3,13 +3,12 @@ import { useContext, useState } from "react"
 import { Content, Full } from "~popup/component/layout"
 import { PasswordField, StringField } from "~popup/component/form"
 import { Btn } from "~popup/component/button"
-import { NotiContext } from "~popup/component/noti"
+import { message } from "~popup/message"
 
 export default function MainPopup(props) {
   const [roomId, setRoomId] = useState("")
   const [roomName, setRoomName] = useState("")
   const [roomPw, setRoomPw] = useState("")
-  const { message } = useContext(NotiContext)
 
   const submitJoin = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()

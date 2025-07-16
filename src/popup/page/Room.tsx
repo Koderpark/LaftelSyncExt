@@ -3,20 +3,17 @@ import { Pill } from "~popup/component/pill"
 import { Content, Full } from "~popup/component/layout"
 import { sendToBackground } from "@plasmohq/messaging"
 import { useStorage } from "@plasmohq/storage/hook"
-import { NotiContext } from "~popup/component/noti"
 import { Btn } from "~popup/component/button"
 import { LuUser, LuCrown } from "react-icons/lu"
 import { Label } from "~popup/component/label"
+import { message } from "~popup/message"
 
 export default function RoomPopup(props) {
-  const { openNoti, message } = useContext(NotiContext)
   const [room] = useStorage("room")
   const peers = room?.peers
 
   const exit = async () => {
     const res = await message("room/exit")
-    if (res) openNoti("Exit success", "success")
-    else openNoti("Exit failed", "error")
   }
 
   return (
