@@ -16,7 +16,7 @@ export const logModule = (() => {
       const list = await get()
       list.shift()
       await storage.set("log", list)
-    }, 3000)
+    }, 2500)
   }
 
   return {

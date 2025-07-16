@@ -14,6 +14,7 @@ import Header from "~popup/layout/header"
 import Navbar from "~popup/layout/nav"
 import { Noti } from "./component/noti"
 import ChatPopup from "./page/Chat"
+import { LogRenderer } from "./component/log"
 
 export default function Index() {
   const [page] = useStorage("page")
@@ -23,6 +24,7 @@ export default function Index() {
     <Noti>
       <div className="w-[320px] h-[480px] p-0">
         <Full>
+          <LogRenderer />
           <Header />
           {page == "main" && room == null && <MainPopup />}
           {page == "main" && room != null && <RoomPopup />}

@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
 import { sendToBackground } from "@plasmohq/messaging"
 import { useStorage } from "@plasmohq/storage/hook"
 import { PillBtn } from "~popup/component/pill"
@@ -6,9 +6,11 @@ import { NotiContext } from "~popup/component/noti"
 import { Content, Full } from "~popup/component/layout"
 import { Btn } from "~popup/component/button"
 import packageJson from "../../../package.json"
+import { message } from "~popup/message"
 
 export default function SettingPopup(props) {
-  const { openNoti, message } = useContext(NotiContext)
+  const { openNoti } = useContext(NotiContext)
+  const [count, setCount] = useState(0)
 
   const handleLogout = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
@@ -36,7 +38,8 @@ export default function SettingPopup(props) {
   }
 
   const logTest = async () => {
-    const res = await message("log/test", { text: "hello world" })
+    const res = await message("log/success", { text: `hello world ${count}` })
+    setCount(count + 1)
     console.log(res)
   }
 
