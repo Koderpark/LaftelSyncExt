@@ -12,12 +12,12 @@ export default function MainPopup(props) {
 
   const submitJoin = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
-    message("room/join", { roomId, roomPw })
+    message("room/join", { roomId, password: roomPw })
   }
 
   const submitCreate = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
-    message("room/create", { roomName, roomPw })
+    message("room/create", { name: roomName, password: roomPw })
   }
 
   return (

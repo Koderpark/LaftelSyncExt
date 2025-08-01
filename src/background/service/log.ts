@@ -23,25 +23,28 @@ export const logModule = (() => {
     }, 2500)
   }
 
+  const pushLog = async (msg: string) => {
+    const list = await get()
+    list.push({
+      type: "success",
+      message: msg,
+      time: new Date()
+    })
+    await set(list)
+  }
+
+  const pushError = async (msg: string) => {
+    const list = await get()
+    list.push({
+      type: "error",
+      message: msg,
+      time: new Date()
+    })
+    await set(list)
+  }
+
   return {
-    push
+    pushLog,
+    pushError
   }
 })()
-
-export const DisplayLog = (msg: string) => {
-  logModule.push({
-    type: "success",
-    message: msg,
-    time: new Date()
-  })
-}
-
-export const RaiseError = (msg: string) => {
-  logModule.push({
-    type: "error",
-    message: msg,
-    time: new Date()
-  })
-
-  //Todo: Logout & state reset
-}

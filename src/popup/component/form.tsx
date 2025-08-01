@@ -28,7 +28,6 @@ export function PasswordField(props) {
 
 export function StorageField(props) {
   const { storageKey, label } = props
-  console.log(storageKey)
   const [storage, setStorage] = useStorage(storageKey)
 
   return (

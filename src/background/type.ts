@@ -30,3 +30,5 @@ export interface Log {
   message: string
   time: Date
 }
+
+export type Page = "login" | "main" | "room" | "setting" | "chat"

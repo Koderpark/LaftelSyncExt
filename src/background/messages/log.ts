@@ -1,5 +1,5 @@
 import type { PlasmoMessaging } from "@plasmohq/messaging"
-import { DisplayLog, RaiseError } from "~background/service/log"
+import { logModule } from "~background/service/log"
 
 const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
   const { msg } = req.body
@@ -10,13 +10,13 @@ const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
 
 const testHandler: PlasmoMessaging.MessageHandler = async (req, res) => {
   const { text } = req.body
-  await DisplayLog(text)
+  await logModule.pushLog(text)
   res.send({ status: "ok" })
 }
 
 const errorHandler: PlasmoMessaging.MessageHandler = async (req, res) => {
   const { text } = req.body
-  await RaiseError(text)
+  await logModule.pushError(text)
   res.send({ status: "ok" })
 }
 

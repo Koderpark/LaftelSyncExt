@@ -4,33 +4,47 @@ import {
   roomUpdateHandler,
   videoHandler
 } from "./socket-handler"
+import { Storage } from "@plasmohq/storage"
+
+const storage = new Storage()
 
 export const socketModule = (() => {
   let instance: Socket | null = null
 
-  const connect = async (
-    type: "host" | "peer",
-    name: string,
-    roomId?: string,
-    password?: string
-  ) => {
+  const connectHost = async (name: string, password?: string) => {
     if (instance) await disconnect()
     instance = io("http://localhost:8081/", {
       transports: ["websocket"],
       reconnection: false,
-      extraHeaders: {
-        type,
+      auth: {
+        type: "host",
+        username: await storage.get("username"),
         name,
+        password
+      }
+    })
+    handler()
+  }
+
+  const connectPeer = async (roomId: string, password?: string) => {
+    if (instance) await disconnect()
+    instance = io("http://localhost:8081/", {
+      transports: ["websocket"],
+      reconnection: false,
+      auth: {
+        type: "peer",
+        username: await storage.get("username"),
         roomId,
         password
       }
     })
-    callHandler()
+    handler()
   }
 
-  const callHandler = () => {
+  const handler = () => {
+    if (!instance) return
     instance.on("connect", connectHandler)
-    instance.on("roomUpdate", roomUpdateHandler)
+    instance.on("roomChanged", roomUpdateHandler)
     instance.on("video", videoHandler)
   }
 
@@ -56,7 +70,8 @@ export const socketModule = (() => {
   }
 
   return {
-    connect,
+    connectHost,
+    connectPeer,
     disconnect,
     get,
     send,

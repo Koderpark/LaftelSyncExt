@@ -1,5 +1,5 @@
 import { Storage } from "@plasmohq/storage"
-import { RaiseError } from "./service/log"
+import { logModule } from "./service/log"
 const storage = new Storage()
 
 /**
@@ -25,8 +25,8 @@ export async function Request(
     })
 
     if (ret.ok) return await ret.json()
-    else return RaiseError(ret.statusText)
+    else return logModule.pushError(ret.statusText)
   } catch (e) {
-    return RaiseError(e)
+    return logModule.pushError(e)
   }
 }

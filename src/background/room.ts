@@ -1,8 +1,34 @@
 import { Storage } from "@plasmohq/storage"
 import { Request } from "./auth"
 import type { Room } from "./type"
+import { socketModule } from "./service/socket"
 
 const storage = new Storage()
+
+export const roomModule = (() => {
+  const create = async (name: string, password?: string) => {
+    await socketModule.connectHost(name, password)
+  }
+
+  const join = async (roomId: string, password?: string) => {
+    await socketModule.connectPeer(roomId, password)
+  }
+
+  const exit = async () => {
+    await socketModule.disconnect()
+  }
+
+  const update = async (room: Room) => {
+    await storage.set("room", room)
+  }
+
+  return {
+    create,
+    join,
+    exit,
+    update
+  }
+})()
 
 /**
  * 방 생성
@@ -21,7 +47,7 @@ export async function createRoom(
   })
   const room = await Request(`http://localhost:3000/room/status`, "GET")
 
-  await roomUpdate(room)
+  await roomModule.update(room)
   return true
 }
 
@@ -53,16 +79,6 @@ export async function joinRoom(
   })
 
   const room = await Request(`http://localhost:3000/room/status`, "GET")
-  await roomUpdate(room)
-  return true
-}
-
-export async function roomRenew(): Promise<boolean> {
-  const room = await Request("http://localhost:3000/room/my", "GET")
-  return await roomUpdate(room)
-}
-
-export async function roomUpdate(room: Room): Promise<boolean> {
-  await storage.set("room", room)
+  await roomModule.update(room)
   return true
 }

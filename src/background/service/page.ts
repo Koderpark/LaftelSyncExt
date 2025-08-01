@@ -1,4 +1,5 @@
 import { Storage } from "@plasmohq/storage"
+import type { Page } from "~background/type"
 const storage = new Storage()
 
 export async function newTab(url: string) {
@@ -17,25 +18,19 @@ export async function modifyTab(url: string) {
 
 export async function initPage() {
   await newTab("http://localhost:3000/")
-  await mainPage()
 }
 
-export async function loginPage() {
-  await storage.set("page", "login")
-}
+export const pageModule = (() => {
+  const get = async () => {
+    return await storage.get("page")
+  }
 
-export async function mainPage() {
-  await storage.set("page", "main")
-}
+  const set = async (input: Page) => {
+    await storage.set("page", input)
+  }
 
-export async function roomPage() {
-  await storage.set("page", "room")
-}
-
-export async function settingPage() {
-  await storage.set("page", "setting")
-}
-
-export async function chatPage() {
-  await storage.set("page", "chat")
-}
+  return {
+    get,
+    set
+  }
+})()
