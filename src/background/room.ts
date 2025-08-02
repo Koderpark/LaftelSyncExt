@@ -20,6 +20,7 @@ export const roomModule = (() => {
   }
 
   const update = async (room: Room) => {
+    if (room === null) return exit()
     await storage.set("room", room)
   }
 

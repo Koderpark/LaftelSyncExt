@@ -6,7 +6,7 @@ export interface Room {
   vidTitle: string
   vidEpisode: string
   vidData: VidData
-  owner: User
+  host: User
   users: User[]
 }
 
@@ -29,6 +29,17 @@ export interface Log {
   type: "success" | "error"
   message: string
   time: Date
+}
+
+export interface RoomMetadata {
+  id: number
+  name: string
+  host: string
+  user: {
+    id: string
+    name: string
+    isHost: boolean
+  }[]
 }
 
 export type Page = "login" | "main" | "room" | "setting" | "chat"
