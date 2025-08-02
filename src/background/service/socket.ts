@@ -1,6 +1,7 @@
 import io, { Socket } from "socket.io-client"
 import {
   connectHandler,
+  disconnectHandler,
   roomUpdateHandler,
   videoHandler
 } from "./socket-handler"
@@ -46,6 +47,7 @@ export const socketModule = (() => {
     instance.on("connect", connectHandler)
     instance.on("roomChanged", roomUpdateHandler)
     instance.on("video", videoHandler)
+    instance.on("disconnect", disconnectHandler)
   }
 
   const disconnect = async () => {

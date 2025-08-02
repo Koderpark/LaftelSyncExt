@@ -16,6 +16,7 @@ export const roomModule = (() => {
 
   const exit = async () => {
     await socketModule.disconnect()
+    await storage.set("room", null)
   }
 
   const update = async (room: Room) => {

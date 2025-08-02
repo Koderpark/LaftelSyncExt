@@ -23,8 +23,8 @@ export default function Index() {
       <Full>
         <LogRenderer />
         <Header />
-        {page == "main" && room == null && <MainPopup />}
-        {page == "main" && room != null && <RoomPopup />}
+        {page == "main" && room === null && <MainPopup />}
+        {page == "main" && room !== null && <RoomPopup />}
         {page == "setting" && <SettingPopup />}
         {page == "chat" && <ChatPopup />}
         <Navbar />
