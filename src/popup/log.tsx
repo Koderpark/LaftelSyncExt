@@ -16,7 +16,7 @@ function LogElement(props: Log) {
 }
 
 export function LogRenderer() {
-  const [log] = useStorage("log", [])
+  const [log] = useStorage<Log[]>("log")
 
   return (
     <div className="fixed top-0 right-0 flex flex-col gap-2 items-center justify-center p-3">

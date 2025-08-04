@@ -24,26 +24,23 @@ export const logModule = (() => {
   }
 
   const pushLog = async (msg: string) => {
-    const list = await get()
-    list.push({
+    await push({
       type: "success",
       message: msg,
       time: new Date()
     })
-    await set(list)
   }
 
   const pushError = async (msg: string) => {
-    const list = await get()
-    list.push({
+    await push({
       type: "error",
       message: msg,
       time: new Date()
     })
-    await set(list)
   }
 
   return {
+    push,
     pushLog,
     pushError
   }
