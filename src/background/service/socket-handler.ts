@@ -1,9 +1,14 @@
 import { roomModule } from "~background/room"
 import { updateVideo } from "~background/video"
 import type { Room, VidData } from "~background/type"
+import { Storage } from "@plasmohq/storage"
 
-export const connectHandler = async () => {
+const storage = new Storage()
+
+export const connectHandler = async (id: string) => {
   console.log("connect")
+  console.log("id", id)
+  await storage.set("userId", id)
 }
 
 export const roomUpdateHandler = async (body: Room) => {

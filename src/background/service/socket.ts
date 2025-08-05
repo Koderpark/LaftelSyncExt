@@ -59,9 +59,9 @@ export const socketModule = (() => {
     handler()
   }
 
-  const handler = () => {
+  const handler = async () => {
     if (!instance) return
-    instance.on("connect", connectHandler)
+    instance.on("connect", () => connectHandler(instance.id))
     instance.on("roomChanged", roomUpdateHandler)
     instance.on("video", videoHandler)
     instance.on("disconnect", disconnectHandler)

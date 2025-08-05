@@ -1,19 +1,12 @@
-import { useContext, useEffect, useState } from "react"
-import { sendToBackground } from "@plasmohq/messaging"
-import { useStorage } from "@plasmohq/storage/hook"
 import { Content, Full } from "~popup/component/layout"
 import { Btn } from "~popup/component/button"
 import packageJson from "../../../package.json"
 import { message } from "~popup/message"
 import { StorageField } from "~popup/component/form"
+import { useState } from "react"
 
 export default function SettingPopup(props) {
   const [count, setCount] = useState(0)
-
-  const handleLogout = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    const res = await message("auth/logout")
-  }
 
   const handleInfoPage = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
@@ -27,11 +20,6 @@ export default function SettingPopup(props) {
     message("page/newTab", {
       url: "https://github.com/koderpark/laftelSyncExt/issues"
     })
-  }
-
-  const handleAuthPage = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    message("page/newTab", { url: "#" }) // TODO: 계정 설정 페이지 추가
   }
 
   const logTest = async () => {
