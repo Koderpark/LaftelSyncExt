@@ -3,20 +3,17 @@ import { Pill } from "~popup/component/pill"
 import { Content, Full } from "~popup/component/layout"
 import { sendToBackground } from "@plasmohq/messaging"
 import { useStorage } from "@plasmohq/storage/hook"
-import { NotiContext } from "~popup/component/noti"
 import { Btn } from "~popup/component/button"
 import { LuUser, LuCrown } from "react-icons/lu"
 import { Label } from "~popup/component/label"
+import { message } from "~popup/message"
+import type { RoomMetadata } from "~background/type"
 
 export default function RoomPopup(props) {
-  const { openNoti, message } = useContext(NotiContext)
-  const [room] = useStorage("room")
-  const [peers] = useStorage("peers")
+  const [room] = useStorage<RoomMetadata | null>("room")
 
   const exit = async () => {
-    const res = await message("room/exit")
-    if (res) openNoti("Exit success", "success")
-    else openNoti("Exit failed", "error")
+    await message("room/exit")
   }
 
   return (
@@ -30,24 +27,31 @@ export default function RoomPopup(props) {
 
           <p className="font-bold text-gray-950 text-2xl mb-4">방 접속자</p>
           <div className="flex flex-col gap-2">
-            {peers && peers.map((peer) => Peer(peer))}
+            {room?.user?.length == 0 && <p>방 접속자가 없습니다.</p>}
+            {room?.user && room.user.map((user) => Peer(user))}
           </div>
         </div>
         <Btn label="방 나가기" onClick={exit} type="option" />
+        <Btn
+          label="디버그"
+          onClick={() => {
+            message("video/parse")
+          }}
+          type="option"
+        />
       </Content>
     </Full>
   )
 }
 
-function Peer(peer) {
+function Peer(peer: RoomMetadata["user"][number]) {
   return (
     <div key={peer.id} className="flex flex-row gap-2">
       <div className="w-5 h-5">
-        {peer.isOwner && <LuCrown className="w-full h-full" />}
-        {!peer.isOwner && <LuUser className="w-full h-full" />}
+        {peer.isHost && <LuCrown className="w-full h-full" />}
+        {!peer.isHost && <LuUser className="w-full h-full" />}
       </div>
       <p className="text-base text-gray-700">{peer.name}</p>
-      {peer.isMe && <Label>me</Label>}
     </div>
   )
 }

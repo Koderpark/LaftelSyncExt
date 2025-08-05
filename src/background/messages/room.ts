@@ -1,31 +1,24 @@
-import { createRoom, exitRoom, joinRoom, roomRenew } from "~background/room"
+import { roomModule } from "~background/room"
 import type { PlasmoMessaging } from "@plasmohq/messaging"
 const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
   const { msg } = req.body
-
   if (msg == "create") createHandler(req, res)
   if (msg == "join") joinHandler(req, res)
   if (msg == "exit") exitHandler(req, res)
-  if (msg == "renew") renewHandler(req, res)
 }
 
 const createHandler: PlasmoMessaging.MessageHandler = async (req, res) => {
-  const message = await createRoom(req.body.roomName, req.body.roomPW)
+  const message = await roomModule.create(req.body.name, req.body.password)
   res.send(message)
 }
 
 const joinHandler: PlasmoMessaging.MessageHandler = async (req, res) => {
-  const message = await joinRoom(req.body.roomId, req.body.roomPW)
+  const message = await roomModule.join(req.body.roomId, req.body.password)
   res.send(message)
 }
 
 const exitHandler: PlasmoMessaging.MessageHandler = async (req, res) => {
-  const message = await exitRoom()
-  res.send(message)
-}
-
-const renewHandler: PlasmoMessaging.MessageHandler = async (req, res) => {
-  const message = await roomRenew()
+  const message = await roomModule.exit()
   res.send(message)
 }
 

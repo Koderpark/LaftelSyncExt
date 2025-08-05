@@ -1,7 +1,6 @@
-import { parseVideo } from "~background/video"
+import { parseVideo } from "../video"
 import type { PlasmoMessaging } from "@plasmohq/messaging"
-import { send } from "~background/socket"
-import { clientAlert } from "~background/index"
+import { socketModule } from "../service/socket"
 
 const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
   const { msg } = req.body
@@ -15,8 +14,7 @@ const parseHandler: PlasmoMessaging.MessageHandler = async (req, res) => {
 }
 
 const updateHandler: PlasmoMessaging.MessageHandler = async (req, res) => {
-  console.log("updatevid")
-  send("updateVid", req.body.data)
+  socketModule.send("video", req.body.data)
 }
 
 export default handler

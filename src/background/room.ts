@@ -1,25 +1,36 @@
 import { Storage } from "@plasmohq/storage"
-import { exitSocket, shake } from "./socket"
-import { authRequest } from "./auth"
+import { Request } from "./auth"
+import type { Room } from "./type"
+import { socketModule } from "./service/socket"
 
 const storage = new Storage()
 
-export type roomType = {
-  id: number
-  ownerId: number
-  cntViewer: number
-  name: string
-  vidName: string
-  vidUrl: string
-  vidEpisode: number
-}
+export const roomModule = (() => {
+  const create = async (name: string, password?: string) => {
+    await socketModule.connectHost(name, password)
+  }
 
-export type peerType = {
-  id: number
-  name: string
-  isOwner: boolean
-  isMe: boolean
-}
+  const join = async (roomId: string, password?: string) => {
+    await socketModule.connectPeer(roomId, password)
+  }
+
+  const exit = async () => {
+    await socketModule.disconnect()
+    await storage.set("room", null)
+  }
+
+  const update = async (room: Room) => {
+    if (room === null) return exit()
+    await storage.set("room", room)
+  }
+
+  return {
+    create,
+    join,
+    exit,
+    update
+  }
+})()
 
 /**
  * 방 생성
@@ -32,13 +43,13 @@ export async function createRoom(
   password: string
 ): Promise<boolean> {
   console.log("createRoom")
-  const room = await authRequest("http://localhost:3000/party", "POST", {
+  await Request("http://localhost:3000/party/create", "POST", {
     name,
     password
   })
-  const peers = await authRequest(`http://localhost:3000/party/peers`, "GET")
+  const room = await Request(`http://localhost:3000/room/status`, "GET")
 
-  await roomUpdate(room, peers)
+  await roomModule.update(room)
   return true
 }
 
@@ -48,8 +59,6 @@ export async function createRoom(
  */
 export async function exitRoom(): Promise<boolean> {
   console.log("exitRoom")
-  await shake()
-  await exitSocket()
   await storage.set("room", null)
   await storage.set("peers", null)
   return true
@@ -66,29 +75,12 @@ export async function joinRoom(
   password?: number
 ): Promise<boolean> {
   console.log("joinRoom")
-  const room = await authRequest("http://localhost:3000/party/join", "POST", {
+  await Request("http://localhost:3000/party/join", "POST", {
     id,
     password
   })
-  const peers = await authRequest(`http://localhost:3000/party/peers`, "GET")
 
-  await roomUpdate(room, peers)
-  return true
-}
-
-export async function roomRenew(): Promise<boolean> {
-  const room = await authRequest("http://localhost:3000/room/my", "GET")
-  const peers = await authRequest(`http://localhost:3000/party/peers`, "GET")
-  return await roomUpdate(room, peers)
-}
-
-export async function roomUpdate(
-  room: roomType,
-  peers: peerType[]
-): Promise<boolean> {
-  await storage.set("room", room)
-  await storage.set("peers", peers)
-  if (room) await shake()
-  else await exitSocket()
+  const room = await Request(`http://localhost:3000/room/status`, "GET")
+  await roomModule.update(room)
   return true
 }
