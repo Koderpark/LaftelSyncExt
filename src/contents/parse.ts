@@ -1,8 +1,5 @@
 import { sendToBackground } from "@plasmohq/messaging"
 import type { PlasmoCSConfig } from "plasmo"
-import { Storage } from "@plasmohq/storage"
-
-const storage = new Storage()
 
 export const config: PlasmoCSConfig = {
   matches: ["https://laftel.net/*"]
