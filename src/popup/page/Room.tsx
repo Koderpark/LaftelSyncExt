@@ -17,6 +17,8 @@ export default function RoomPopup(props) {
     await message("room/exit")
   }
 
+  const isHost = room?.host === userId
+
   return (
     <Full>
       <Content>
@@ -29,7 +31,7 @@ export default function RoomPopup(props) {
           <p className="font-bold text-gray-950 text-2xl mb-4">방 접속자</p>
           <div className="flex flex-col gap-2">
             {room?.user?.length == 0 && <p>방 접속자가 없습니다.</p>}
-            {room?.user && room.user.map((user) => Peer(user, userId))}
+            {room?.user && room.user.map((user) => Peer(user, userId, isHost))}
           </div>
         </div>
         <div className="flex flex-col gap-2">
@@ -47,7 +49,19 @@ export default function RoomPopup(props) {
   )
 }
 
-function Peer(peer: RoomMetadata["user"][number], userId: string) {
+function Peer(
+  peer: RoomMetadata["user"][number],
+  userId: string,
+  isHost: boolean
+) {
+  const isMe = peer.id === userId
+
+  const kickHandler = () => {
+    message("room/kick", {
+      id: peer.id
+    })
+  }
+
   return (
     <div key={peer.id} className="flex flex-row gap-2">
       <div className="w-5 h-5">
@@ -55,7 +69,12 @@ function Peer(peer: RoomMetadata["user"][number], userId: string) {
         {!peer.isHost && <LuUser className="w-full h-full" />}
       </div>
       <p className="text-base text-gray-700">{peer.name}</p>
-      <p className="text-sm text-gray-700">{peer.id === userId ? "나" : ""}</p>
+      <p className="text-sm text-gray-700">{isMe ? "나" : ""}</p>
+      {isHost && !isMe && (
+        <button className="text-sm text-red-500" onClick={kickHandler}>
+          강퇴
+        </button>
+      )}
     </div>
   )
 }

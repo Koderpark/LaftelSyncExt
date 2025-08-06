@@ -5,6 +5,7 @@ const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
   if (msg == "create") createHandler(req, res)
   if (msg == "join") joinHandler(req, res)
   if (msg == "exit") exitHandler(req, res)
+  if (msg == "kick") kickHandler(req, res)
 }
 
 const createHandler: PlasmoMessaging.MessageHandler = async (req, res) => {
@@ -21,5 +22,11 @@ const exitHandler: PlasmoMessaging.MessageHandler = async (req, res) => {
   const message = await roomModule.exit()
   res.send(message)
 }
+
+const kickHandler: PlasmoMessaging.MessageHandler = async (req, res) => {
+  const message = await roomModule.kick(req.body.id)
+  res.send(message)
+}
+
 
 export default handler

@@ -24,11 +24,16 @@ export const roomModule = (() => {
     await storage.set("room", room)
   }
 
+  const kick = async (id: string) => {
+    await socketModule.send("room/kick", { userId: id })
+  }
+
   return {
     create,
     join,
     exit,
-    update
+    update,
+    kick
   }
 })()
 
