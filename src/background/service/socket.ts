@@ -3,7 +3,7 @@ import {
   connectHandler,
   disconnectHandler,
   roomUpdateHandler,
-  videoHandler
+  videoUpdateHandler
 } from "./socket-handler"
 import { Storage } from "@plasmohq/storage"
 import { logModule } from "./log"
@@ -63,7 +63,7 @@ export const socketModule = (() => {
     if (!instance) return
     instance.on("connect", () => connectHandler(instance.id))
     instance.on("roomChanged", roomUpdateHandler)
-    instance.on("video", videoHandler)
+    instance.on("videoChanged", videoUpdateHandler)
     instance.on("disconnect", disconnectHandler)
   }
 
