@@ -1,6 +1,5 @@
 import type { PlasmoMessaging } from "@plasmohq/messaging"
-import { clientAlert } from "~background"
-import { userInfo } from "~background/user"
+import { userModule } from "~background/user"
 
 const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
   const { msg } = req.body
@@ -8,7 +7,7 @@ const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
 }
 
 const infoHandler: PlasmoMessaging.MessageHandler = async (req, res) => {
-  const message = await userInfo()
+  const message = await userModule.get()
   res.send(message)
 }
 

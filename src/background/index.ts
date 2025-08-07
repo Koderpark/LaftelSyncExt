@@ -1,17 +1,22 @@
-import * as room from "./room"
-import * as validate from "./validate"
-import * as auth from "./auth"
-import * as socket from "./socket"
+// import * as room from "./room"
+// import * as validate from "./validate"
+// import * as auth from "./auth"
+import * as socket from "./service/socket"
+import * as page from "./service/page"
 
-export async function clientAlert(msg: string) {
-  const currtab = await chrome.tabs.query({ active: true, currentWindow: true })
-  chrome.scripting.executeScript({
-    target: { tabId: currtab[0].id },
-    args: [msg],
-    func: (msg) => {
-      alert(JSON.stringify(msg))
-    }
-  })
-}
+export { socket, page }
 
-export { room, validate, auth, socket }
+import { Storage } from "@plasmohq/storage"
+
+const storage = new Storage()
+storage.watch({
+  room: (c) => {
+    chrome.action.setBadgeText({
+      text: c.newValue ? "🔴" : ""
+    })
+  }
+})
+
+chrome.action.setBadgeText({
+  text: ""
+})
