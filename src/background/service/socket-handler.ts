@@ -18,7 +18,7 @@ export const roomUpdateHandler = async (body: Room) => {
 
 export const videoUpdateHandler = (data: VidData) => {
   console.log("videoUpdateHandler", data)
-  // updateVideo(data)
+  updateVideo(data)
 }
 
 export const disconnectHandler = async () => {

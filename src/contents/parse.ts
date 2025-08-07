@@ -53,7 +53,7 @@ export const parseVideo = async () => {
   const time = video.currentTime
   const isPaused = video.paused
 
-  console.log(title, episode)
+  console.log("parsing", { title, episode, url, speed, time, isPaused })
 
   const res = await sendToBackground({
     name: "video",
