@@ -7,6 +7,7 @@ import {
 } from "./socket-handler"
 import { Storage } from "@plasmohq/storage"
 import { logModule } from "./log"
+import { url } from "../const"
 
 const storage = new Storage()
 
@@ -23,7 +24,7 @@ export const socketModule = (() => {
     }
 
     if (instance) await disconnect()
-    instance = io("http://localhost:8081/", {
+    instance = io(`${url}`, {
       transports: ["websocket"],
       reconnection: false,
       auth: {
@@ -46,7 +47,7 @@ export const socketModule = (() => {
     }
 
     if (instance) await disconnect()
-    instance = io("http://localhost:8081/", {
+    instance = io(`${url}`, {
       transports: ["websocket"],
       reconnection: false,
       auth: {

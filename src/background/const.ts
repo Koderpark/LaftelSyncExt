@@ -1,3 +1,8 @@
+export const isCanary = true
+export const url = isCanary
+  ? process.env.PLASMO_PUBLIC_BE_CANARY!
+  : process.env.PLASMO_PUBLIC_BE_PUBLIC!
+
 export interface Room {
   id: number
   updatedAt: Date
@@ -43,6 +48,3 @@ export interface RoomMetadata {
 }
 
 export type Page = "login" | "main" | "room" | "setting" | "chat"
-
-export type channelType = "canary" | "public"
-export const updateChannel: channelType = "canary"
