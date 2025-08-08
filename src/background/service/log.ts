@@ -23,25 +23,22 @@ export const logModule = (() => {
     }, 2500)
   }
 
-  const pushLog = async (msg: string) => {
+  const log = async (type: "success" | "error", msg: string) => {
     await push({
-      type: "success",
+      type,
       message: msg,
       time: new Date()
     })
   }
 
-  const pushError = async (msg: string) => {
-    await push({
-      type: "error",
-      message: msg,
-      time: new Date()
-    })
+  const devLog = async (msg: string) => {
+    const isCanary = await storage.get("isCanary")
+    if (!isCanary) return
+    await log("success", msg)
   }
 
   return {
-    push,
-    pushLog,
-    pushError
+    log,
+    devLog
   }
 })()

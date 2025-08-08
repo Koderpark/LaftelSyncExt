@@ -13,7 +13,7 @@ export async function Request(
   method: "GET" | "POST" | "PUT" | "DELETE",
   body: any = {}
 ): Promise<any | null> {
-  console.log("Request")
+  logModule.devLog("Request")
   try {
     const ret = await fetch(url, {
       method,
@@ -25,8 +25,8 @@ export async function Request(
     })
 
     if (ret.ok) return await ret.json()
-    else return logModule.pushError(ret.statusText)
+    else return logModule.log("error", ret.statusText)
   } catch (e) {
-    return logModule.pushError(e)
+    return logModule.log("error", e)
   }
 }

@@ -10,13 +10,13 @@ const handler: PlasmoMessaging.MessageHandler = async (req, res) => {
 
 const testHandler: PlasmoMessaging.MessageHandler = async (req, res) => {
   const { text } = req.body
-  await logModule.pushLog(text)
+  await logModule.log("success", text)
   res.send({ status: "ok" })
 }
 
 const errorHandler: PlasmoMessaging.MessageHandler = async (req, res) => {
   const { text } = req.body
-  await logModule.pushError(text)
+  await logModule.log("error", text)
   res.send({ status: "ok" })
 }
 
