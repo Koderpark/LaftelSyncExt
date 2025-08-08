@@ -15,8 +15,8 @@ import ChatPopup from "./page/Chat"
 import { LogRenderer } from "./log"
 
 export default function Index() {
-  const [page] = useStorage("page")
-  const [room] = useStorage("room")
+  const [page] = useStorage("page", "main")
+  const [room] = useStorage("room", null)
 
   return (
     <div className="w-[320px] h-[480px] p-0">

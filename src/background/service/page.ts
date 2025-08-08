@@ -19,18 +19,3 @@ export async function modifyTab(url: string) {
 export async function initPage() {
   await newTab("http://localhost:3000/")
 }
-
-export const pageModule = (() => {
-  const get = async () => {
-    return await storage.get("page")
-  }
-
-  const set = async (input: Page) => {
-    await storage.set("page", input)
-  }
-
-  return {
-    get,
-    set
-  }
-})()

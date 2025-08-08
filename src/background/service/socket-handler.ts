@@ -7,7 +7,6 @@ const storage = new Storage()
 
 export const connectHandler = async (id: string) => {
   console.log("connect")
-  console.log("id", id)
   await storage.set("userId", id)
 }
 
@@ -23,5 +22,6 @@ export const videoUpdateHandler = (data: VidData) => {
 
 export const disconnectHandler = async () => {
   console.log("disconnect")
+  await storage.set("userId", null)
   await roomModule.exit()
 }
