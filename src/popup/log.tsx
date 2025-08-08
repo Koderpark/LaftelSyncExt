@@ -1,5 +1,5 @@
 import { useStorage } from "@plasmohq/storage/hook"
-import type { Log } from "~background/type"
+import type { Log } from "~background/const"
 
 function LogElement(props: Log) {
   const { type, message } = props

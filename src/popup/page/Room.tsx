@@ -7,7 +7,7 @@ import { Btn } from "~popup/component/button"
 import { LuUser, LuCrown } from "react-icons/lu"
 import { Label } from "~popup/component/label"
 import { message } from "~popup/message"
-import type { RoomMetadata } from "~background/type"
+import type { RoomMetadata } from "~background/const"
 
 export default function RoomPopup(props) {
   const [room] = useStorage<RoomMetadata | null>("room")

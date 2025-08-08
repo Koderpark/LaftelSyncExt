@@ -43,3 +43,6 @@ export interface RoomMetadata {
 }
 
 export type Page = "login" | "main" | "room" | "setting" | "chat"
+
+export type channelType = "canary" | "public"
+export const updateChannel: channelType = "canary"

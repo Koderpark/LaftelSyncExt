@@ -1,6 +1,6 @@
 import { roomModule } from "~background/room"
 import { updateVideo } from "~background/video"
-import type { Room, VidData } from "~background/type"
+import type { Room, VidData } from "~background/const"
 import { Storage } from "@plasmohq/storage"
 
 const storage = new Storage()

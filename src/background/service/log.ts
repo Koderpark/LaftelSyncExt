@@ -1,5 +1,5 @@
 import { Storage } from "@plasmohq/storage"
-import type { Log } from "../type"
+import type { Log } from "../const"
 const storage = new Storage()
 
 export const logModule = (() => {

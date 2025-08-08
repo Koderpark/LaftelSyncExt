@@ -43,15 +43,16 @@ export default function SettingPopup(props) {
         </Full>
         <div className="flex flex-col gap-2">
           <StorageField storageKey="username" label="사용자 이름" />
-          <div className="flex gap-2">
+          <div className="grid grid-cols-2 gap-2">
             <Btn label="도움말" onClick={handleInfoPage} type="option" />
             <Btn
               label="오류제보/건의"
               onClick={handleReportPage}
               type="option"
             />
+            <Btn label="업데이트 채널 선택" onClick={logTest} type="option" />
+            <Btn label="Log Test" onClick={logTest} />
           </div>
-          <Btn label="Log Test" onClick={logTest} />
         </div>
       </Content>
     </Full>

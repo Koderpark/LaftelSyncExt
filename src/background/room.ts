@@ -1,6 +1,6 @@
 import { Storage } from "@plasmohq/storage"
 import { Request } from "./auth"
-import type { Room } from "./type"
+import type { Room } from "./const"
 import { socketModule } from "./service/socket"
 
 const storage = new Storage()
